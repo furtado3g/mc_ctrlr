@@ -1,0 +1,13 @@
+.git/
+.agents/
+.specify/
+specs/
+node_modules/
+vendor/
+.env
+.env.*
+!.env.example
+storage/logs/
+public/build/
+*.log
+coverage/

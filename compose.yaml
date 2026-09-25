@@ -1,0 +1,42 @@
+services:
+  app:
+    build: .
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:8000"
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: mc_ctrlr
+      DB_USERNAME: mc_ctrlr
+      DB_PASSWORD: local_dev_password
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: mc_ctrlr
+      POSTGRES_USER: mc_ctrlr
+      POSTGRES_PASSWORD: local_dev_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mc_ctrlr -d mc_ctrlr"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  node:
+    image: node:24-alpine
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0
+
+volumes:
+  postgres_data:

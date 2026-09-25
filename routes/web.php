@@ -1,0 +1,64 @@
+<?php
+
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\BillingPeriodController;
+use App\Http\Controllers\CashController;
+use App\Http\Controllers\CashMovementController;
+use App\Http\Controllers\ClubRoleController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeeAdjustmentController;
+use App\Http\Controllers\FeeController;
+use App\Http\Controllers\FeeGenerationController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MemberMotorcycleController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleAssignmentController;
+use App\Http\Controllers\TableQueryController;
+use App\Http\Middleware\EnsureActiveUser;
+use Illuminate\Support\Facades\Route;
+
+Route::redirect('/', '/login')->name('home');
+
+Route::middleware(['auth', 'verified', EnsureActiveUser::class])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/table-query', [TableQueryController::class, 'update']);
+    Route::get('/admin/users', [AdminUserController::class, 'index']);
+    Route::post('/admin/users', [AdminUserController::class, 'store']);
+    Route::patch('/admin/users/{user}/permissions', [AdminUserController::class, 'permissions']);
+    Route::get('/members', [MemberController::class, 'index']);
+    Route::post('/members', [MemberController::class, 'store']);
+    Route::get('/members/{member}', [MemberController::class, 'show']);
+    Route::patch('/members/{member}', [MemberController::class, 'update']);
+    Route::post('/members/{member}/motorcycles', [MemberMotorcycleController::class, 'store']);
+    Route::patch('/member-motorcycles/{link}', [MemberMotorcycleController::class, 'update']);
+    Route::get('/club-roles', [ClubRoleController::class, 'index']);
+    Route::post('/club-roles', [ClubRoleController::class, 'store']);
+    Route::patch('/club-roles/{role}', [ClubRoleController::class, 'update']);
+    Route::post('/members/{member}/role-assignments', [RoleAssignmentController::class, 'store']);
+    Route::patch('/role-assignments/{assignment}', [RoleAssignmentController::class, 'update']);
+    Route::get('/billing-periods', [BillingPeriodController::class, 'index']);
+    Route::post('/billing-periods', [BillingPeriodController::class, 'store']);
+    Route::patch('/billing-periods/{period}', [BillingPeriodController::class, 'update']);
+    Route::post('/billing-periods/{period}/generate', [FeeGenerationController::class, 'store']);
+    Route::get('/fees', [FeeController::class, 'index']);
+    Route::get('/fees/{fee}', [FeeController::class, 'show']);
+    Route::post('/fees/{fee}/adjustments', [FeeAdjustmentController::class, 'store']);
+    Route::post('/fees/{fee}/payments', [PaymentController::class, 'store']);
+    Route::post('/payments/{payment}/reverse', [PaymentController::class, 'reverse']);
+    Route::get('/cash', [CashController::class, 'index']);
+    Route::post('/cash/movements', [CashMovementController::class, 'store']);
+    Route::post('/cash/movements/{movement}/corrections', [CashMovementController::class, 'correct']);
+    Route::post('/cash/movements/{movement}/reverse', [CashMovementController::class, 'reverse']);
+    Route::post('/cash/movements/{movement}/receipt', [ReceiptController::class, 'store']);
+    Route::get('/cash/movements/{movement}/receipt', [ReceiptController::class, 'show']);
+    Route::get('/reports/fees', [ReportController::class, 'fees']);
+    Route::get('/reports/fees/export', [ReportController::class, 'feesCsv']);
+    Route::get('/reports/cash', [ReportController::class, 'cash']);
+    Route::get('/reports/cash/export', [ReportController::class, 'cashCsv']);
+    Route::get('/reports/fiscal', [ReportController::class, 'fiscal']);
+    Route::get('/reports/fiscal/export', [ReportController::class, 'fiscalCsv']);
+});
+
+require __DIR__.'/settings.php';
