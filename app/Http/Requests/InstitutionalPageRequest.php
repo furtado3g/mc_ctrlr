@@ -22,8 +22,8 @@ class InstitutionalPageRequest extends FormRequest
             'logo' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
             'logo_path' => ['nullable', 'string', 'max:255'],
             'remove_logo' => ['nullable', 'boolean'],
-            'sections' => ['required', 'array', 'max:4'],
-            'sections.*.key' => ['required', 'string', 'in:hero,about,activities,contact', 'distinct'],
+            'sections' => ['required', 'array', 'max:5'],
+            'sections.*.key' => ['required', 'string', 'in:hero,about,activities,instagram,contact', 'distinct'],
             'sections.*.title' => ['nullable', 'string', 'max:160'],
             'sections.*.body' => ['nullable', 'string', 'max:5000'],
             'sections.*.image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
@@ -54,7 +54,7 @@ class InstitutionalPageRequest extends FormRequest
                     continue;
                 }
                 $key = $section['key'] ?? null;
-                if (is_string($key) && ! in_array($key, ['hero', 'about', 'activities', 'contact'], true)) {
+                if (is_string($key) && ! in_array($key, ['hero', 'about', 'activities', 'instagram', 'contact'], true)) {
                     $validator->errors()->add("sections.$index.key", 'Seção desconhecida.');
                 }
                 foreach (['title', 'body', 'cta_label'] as $textField) {

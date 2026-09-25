@@ -22,7 +22,9 @@ class SaveInstitutionalPageDraft
                 $snapshot['logo_path'] = $request->file('logo')->store('institutional', 'public');
             }
             foreach ($data['sections'] as $index => $section) {
-                $imagePath = ! empty($section['remove_image']) ? null : ($section['image_path'] ?? $page?->draft_content['sections'][$index]['image_path'] ?? $page?->published_content['sections'][$index]['image_path'] ?? null);
+                $existingDraftSection = collect($page?->draft_content['sections'] ?? [])->firstWhere('key', $section['key']);
+                $existingPublishedSection = collect($page?->published_content['sections'] ?? [])->firstWhere('key', $section['key']);
+                $imagePath = ! empty($section['remove_image']) ? null : ($section['image_path'] ?? $existingDraftSection['image_path'] ?? $existingPublishedSection['image_path'] ?? null);
                 if ($request->file("sections.$index.image")) {
                     $imagePath = $request->file("sections.$index.image")->store('institutional', 'public');
                 }

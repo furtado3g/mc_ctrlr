@@ -50,7 +50,7 @@ Todas exigem sessão autenticada, conta ativa e e-mail verificado, além da perm
 
 ## Contrato dos campos das seções
 
-- Somente as seções conhecidas `hero`, `about`, `activities` e `contact` podem ser enviadas.
+- Somente as seções conhecidas `hero`, `about`, `activities`, `instagram` e `contact` podem ser enviadas.
 - Uma seção aparece publicamente somente quando `enabled` é verdadeiro.
 - Seções ativas devem ter título e campos de conteúdo necessários para seu tipo.
 - Rótulo e URL da chamada são opcionais como par; URL local deve começar por `/` e URL externa deve usar HTTPS.

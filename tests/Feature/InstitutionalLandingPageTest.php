@@ -37,4 +37,20 @@ class InstitutionalLandingPageTest extends TestCase
 
         $this->get('/login')->assertOk()->assertInertia(fn (Assert $page) => $page->where('name', 'Estradeiros')->where('logo', Storage::disk('public')->url('institutional/logo.webp')));
     }
+
+    public function test_public_landing_exposes_instagram_section_when_enabled(): void
+    {
+        InstitutionalPage::create(['key' => 'home', 'published_content' => ['name' => 'Estradeiros MC', 'logo_path' => null, 'sections' => [
+            ['key' => 'hero', 'title' => 'Início', 'body' => 'Texto', 'enabled' => true, 'position' => 0],
+            ['key' => 'instagram', 'title' => 'Galeria Instagram', 'body' => 'Nosso feed', 'cta_label' => 'Seguir', 'cta_url' => 'https://instagram.com/estradeirosmc', 'enabled' => true, 'position' => 1],
+        ]], 'draft_content' => null]);
+
+        $this->get('/')->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->where('content.name', 'Estradeiros MC')
+            ->has('content.sections', 2)
+            ->where('content.sections.1.key', 'instagram')
+            ->where('content.sections.1.title', 'Galeria Instagram')
+            ->where('content.sections.1.cta_url', 'https://instagram.com/estradeirosmc')
+        );
+    }
 }

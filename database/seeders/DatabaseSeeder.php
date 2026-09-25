@@ -16,9 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(AdminUserSeeder::class);
+
         $email = config('mc.initial_admin_email');
         $password = config('mc.initial_admin_password');
-        if (! $email || ! $password || User::exists()) {
+        if (! $email || ! $password) {
             return;
         }
 
@@ -28,7 +30,8 @@ class DatabaseSeeder extends Seeder
             'active' => true,
             'email_verified_at' => now(),
         ]);
-        foreach (['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao'] as $area) {
+
+        foreach (['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao', 'institucional'] as $area) {
             foreach (['view', 'edit'] as $action) {
                 PermissionGrant::firstOrCreate(
                     ['user_id' => $user->id, 'area' => $area, 'action' => $action],

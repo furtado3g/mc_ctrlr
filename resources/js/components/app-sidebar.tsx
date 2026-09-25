@@ -1,16 +1,15 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
-    LayoutGrid,
-    Users,
-    Shield,
     CalendarDays,
-    Wallet,
     FileBarChart,
-    Settings,
-    UserRound,
+    LayoutGrid,
     PanelsTopLeft,
+    Settings,
+    Shield,
+    UserRound,
+    Users,
+    Wallet,
 } from 'lucide-react';
-import { usePage } from '@inertiajs/react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -27,61 +26,107 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
-
 const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
     const { auth } = usePage().props as unknown as {
         auth: {
-            permissions: { area: string; action: string }[];
-            hasMemberProfile: boolean;
+            permissions?: { area: string; action: string }[];
+            hasMemberProfile?: boolean;
         };
     };
+
     const can = (area: string) =>
-        auth.permissions?.some((p) => p.area === area && p.action === 'view');
-    const items: NavItem[] = [...mainNavItems];
-    if (auth.hasMemberProfile)
+        auth?.permissions?.some((p) => p.area === area && p.action === 'view') ?? false;
+
+    const items: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (auth?.hasMemberProfile) {
         items.push({
             title: 'Meu perfil',
             href: '/me/profile',
             icon: UserRound,
         });
-    if (can('cadastros'))
-        items.push(
+    }
+
+    // Subnível: Gestão do Clube
+    const clubItems: NavItem[] = [];
+    if (can('cadastros')) {
+        clubItems.push(
             { title: 'Membros', href: '/members', icon: Users },
-            { title: 'Hierarquia', href: '/club-roles', icon: Shield },
+            { title: 'Hierarquia & Cargos', href: '/club-roles', icon: Shield },
         );
-    if (can('cobrancas'))
+    }
+    if (clubItems.length > 0) {
         items.push({
+            title: 'Gestão do Clube',
+            icon: Users,
+            items: clubItems,
+        });
+    }
+
+    // Subnível: Financeiro
+    const financialItems: NavItem[] = [];
+    if (can('cobrancas')) {
+        financialItems.push({
             title: 'Mensalidades',
             href: '/fees',
             icon: CalendarDays,
         });
-    if (can('caixa'))
-        items.push({ title: 'Caixa', href: '/cash', icon: Wallet });
-    if (can('relatorios'))
-        items.push({
+    }
+    if (can('caixa')) {
+        financialItems.push({
+            title: 'Caixa',
+            href: '/cash',
+            icon: Wallet,
+        });
+    }
+    if (can('relatorios')) {
+        financialItems.push({
             title: 'Relatórios',
             href: '/reports/fees',
             icon: FileBarChart,
         });
-    if (can('administracao'))
-        items.push({ title: 'Usuários', href: '/admin/users', icon: Settings });
-    if (can('administracao'))
+    }
+    if (financialItems.length > 0) {
         items.push({
-            title: 'Grupos de acesso',
-            href: '/access-groups',
-            icon: Shield,
+            title: 'Financeiro',
+            icon: Wallet,
+            items: financialItems,
         });
-    if (can('institucional'))
-        items.push({ title: 'Página institucional', href: '/institutional-page', icon: PanelsTopLeft });
+    }
+
+    // Institucional / Landing page
+    if (can('institucional')) {
+        items.push({
+            title: 'Página institucional',
+            href: '/institutional-page',
+            icon: PanelsTopLeft,
+        });
+    }
+
+    // Subnível: Administração
+    const adminItems: NavItem[] = [];
+    if (can('administracao')) {
+        adminItems.push(
+            { title: 'Usuários', href: '/admin/users', icon: Users },
+            { title: 'Grupos de acesso', href: '/access-groups', icon: Shield },
+        );
+    }
+    if (adminItems.length > 0) {
+        items.push({
+            title: 'Administração',
+            icon: Settings,
+            items: adminItems,
+        });
+    }
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

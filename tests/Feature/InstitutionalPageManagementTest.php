@@ -81,4 +81,49 @@ class InstitutionalPageManagementTest extends TestCase
         $this->actingAs($editor)->post('/institutional-page/publish')->assertRedirect();
         $this->assertSame($draft['logo_path'], InstitutionalPage::first()->published_content['logo_path']);
     }
+
+    public function test_instagram_section_can_be_saved_in_draft_and_published(): void
+    {
+        $editor = User::factory()->create();
+        $this->grant($editor, 'view');
+        $this->grant($editor, 'edit');
+
+        $payload = [
+            'name' => 'Clube da Estrada',
+            'logo_path' => null,
+            'sections' => [
+                [
+                    'key' => 'hero',
+                    'title' => 'Início',
+                    'body' => 'Texto do início',
+                    'image_path' => null,
+                    'cta_label' => null,
+                    'cta_url' => null,
+                    'enabled' => true,
+                    'position' => 0,
+                ],
+                [
+                    'key' => 'instagram',
+                    'title' => 'Galeria do Instagram',
+                    'body' => 'Siga nossas rotas no perfil oficial',
+                    'image_path' => null,
+                    'cta_label' => 'Seguir no Instagram',
+                    'cta_url' => 'https://instagram.com/clubedaestrada',
+                    'enabled' => true,
+                    'position' => 1,
+                ],
+            ],
+        ];
+
+        $this->actingAs($editor)->patch('/institutional-page/draft', $payload)->assertRedirect();
+        $draft = InstitutionalPage::firstOrFail()->draft_content;
+        $this->assertCount(2, $draft['sections']);
+        $this->assertSame('instagram', $draft['sections'][1]['key']);
+        $this->assertSame('https://instagram.com/clubedaestrada', $draft['sections'][1]['cta_url']);
+
+        $this->actingAs($editor)->post('/institutional-page/publish')->assertRedirect();
+        $published = InstitutionalPage::firstOrFail()->published_content;
+        $this->assertSame('instagram', $published['sections'][1]['key']);
+        $this->assertSame('Galeria do Instagram', $published['sections'][1]['title']);
+    }
 }

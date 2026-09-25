@@ -3,10 +3,16 @@ import {
     ArrowDown,
     ArrowRight,
     ArrowUpRight,
+    Camera,
     Compass,
     Flag,
+    Heart,
+    Instagram,
     Menu,
+    MessageCircle,
     Route,
+    Shield,
+    Sparkles,
     Users,
     X,
 } from 'lucide-react';
@@ -28,9 +34,67 @@ const sectionLabels: Record<string, string> = {
     hero: 'Início',
     about: 'O motoclube',
     activities: 'Na estrada',
+    instagram: 'Instagram',
     contact: 'Contato',
 };
 const roadPhoto = '/images/landing/motorcycle-road.jpg';
+
+const instagramPosts = [
+    {
+        id: 1,
+        image: '/images/landing/instagram/insta-1.jpg',
+        alt: 'Comboio de motocicletas em rodovia panorâmica de serra',
+        caption: 'Bate e fica até a serra. O melhor destino é a companhia de quem roda junto.',
+        likes: '384',
+        comments: '29',
+        tag: '#NaEstrada',
+    },
+    {
+        id: 2,
+        image: '/images/landing/instagram/insta-2.jpg',
+        alt: 'Detalhe mecânico de motocicleta customizada no asfalto',
+        caption: 'Máquinas alinhadas e prontas para a próxima jornada. Cuidado e paixão em cada detalhe.',
+        likes: '512',
+        comments: '43',
+        tag: '#Customização',
+    },
+    {
+        id: 3,
+        image: '/images/landing/instagram/insta-3.jpg',
+        alt: 'Motociclista apreciando a paisagem em estrada de montanha ao nascer do sol',
+        caption: 'O asfalto livre e o horizonte à frente. Sensação que só quem pilota conhece.',
+        likes: '467',
+        comments: '38',
+        tag: '#Liberdade',
+    },
+    {
+        id: 4,
+        image: '/images/landing/instagram/insta-4.jpg',
+        alt: 'Motocicleta estacionada com vista para o mar em rota costeira',
+        caption: 'Parada estratégica na rota costeira. Vento no rosto e espírito renovado.',
+        likes: '629',
+        comments: '54',
+        tag: '#RotaCosteira',
+    },
+    {
+        id: 5,
+        image: '/images/landing/instagram/insta-5.jpg',
+        alt: 'Motocicletas clássicas alinhadas em ponto de encontro de estrada',
+        caption: 'Parceria de estrada: café quente, histórias de viagem e o próximo trajeto planejado.',
+        likes: '441',
+        comments: '31',
+        tag: '#Irmandade',
+    },
+    {
+        id: 6,
+        image: '/images/landing/instagram/insta-6.jpg',
+        alt: 'Viagem ao pôr do sol em rodovia aberta',
+        caption: 'Fim de tarde na rodovia. Voltando para casa com a alma leve e o tanque cheio.',
+        likes: '715',
+        comments: '62',
+        tag: '#PorDoSol',
+    },
+];
 
 function CallToAction({
     section,
@@ -81,46 +145,98 @@ function SectionContent({
         .filter((text) => text.trim());
     if (section.key === 'hero') {
         return (
-            <section id="hero" className="mc-hero" aria-labelledby="hero-title">
-                <div className="mc-hero-photo">
-                    <img
-                        src={section.image_url || roadPhoto}
-                        alt={
-                            section.image_url
-                                ? ''
-                                : 'Imagem ilustrativa de uma motociclista na estrada ao pôr do sol'
-                        }
-                        fetchPriority="high"
-                        width={1920}
-                        height={1280}
-                    />
-                </div>
-                <div className="mc-container mc-hero-content">
-                    <p className="mc-eyebrow">
-                        <span />
-                        Liberdade sobre duas rodas
-                    </p>
-                    <h1 id="hero-title">{section.title}</h1>
-                    <p className="mc-hero-body">{section.body}</p>
-                    <div className="mc-actions">
-                        <CallToAction section={section} />
-                        {hasAbout && section.cta_url !== '#about' && (
-                            <a className="mc-text-link" href="#about">
-                                Conheça o motoclube{' '}
-                                <ArrowDown size={16} aria-hidden="true" />
-                            </a>
-                        )}
+            <>
+                <section
+                    id="hero"
+                    className="mc-hero"
+                    aria-labelledby="hero-title"
+                >
+                    <div className="mc-hero-photo">
+                        <img
+                            src={section.image_url || roadPhoto}
+                            alt={
+                                section.image_url
+                                    ? ''
+                                    : 'Imagem ilustrativa de uma motociclista na estrada ao pôr do sol'
+                            }
+                            fetchPriority="high"
+                            width={1920}
+                            height={1280}
+                        />
+                    </div>
+                    <div className="mc-container mc-hero-content">
+                        <div className="mc-hero-badge">
+                            <Sparkles size={13} aria-hidden="true" />
+                            <span>Motoclube Oficial · Tradição & Estrada</span>
+                        </div>
+                        <p className="mc-eyebrow">
+                            <span />
+                            Liberdade sobre duas rodas
+                        </p>
+                        <h1 id="hero-title">{section.title}</h1>
+                        <p className="mc-hero-body">{section.body}</p>
+                        <div className="mc-actions">
+                            <CallToAction section={section} />
+                            {hasAbout && section.cta_url !== '#about' && (
+                                <a className="mc-text-link" href="#about">
+                                    Conheça o motoclube{' '}
+                                    <ArrowDown size={16} aria-hidden="true" />
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                    <div className="mc-hero-bottom mc-container">
+                        <div className="mc-hero-motto">
+                            <Compass size={14} aria-hidden="true" />
+                            <span>
+                                O caminho tem mais sentido quando é compartilhado.
+                            </span>
+                        </div>
+                        <div className="mc-hero-highlights" aria-hidden="true">
+                            <span>✦ ESTRADA</span>
+                            <span>✦ IRMANDADE</span>
+                            <span>✦ RESPEITO</span>
+                        </div>
+                        <span className="mc-road-mark" aria-hidden="true">
+                            ━━ ━━ ━━
+                        </span>
+                    </div>
+                </section>
+                <div className="mc-strip" aria-label="Destaques do motoclube">
+                    <div className="mc-container mc-strip-inner">
+                        <div className="mc-strip-item">
+                            <span className="mc-strip-number">01</span>
+                            <div>
+                                <strong>Rotas & Viagens</strong>
+                                <p>
+                                    Passeios regulares e expedições em grupo por
+                                    novos caminhos.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="mc-strip-item">
+                            <span className="mc-strip-number">02</span>
+                            <div>
+                                <strong>Irmandade & Apoio</strong>
+                                <p>
+                                    Companheirismo autêntico e suporte mútuo
+                                    entre motociclistas.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="mc-strip-item">
+                            <span className="mc-strip-number">03</span>
+                            <div>
+                                <strong>Respeito & Tradição</strong>
+                                <p>
+                                    Pilotagem responsável, disciplina e amor
+                                    genuíno pelo asfalto.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="mc-hero-bottom mc-container">
-                    <span>
-                        O caminho tem mais sentido quando é compartilhado.
-                    </span>
-                    <span className="mc-road-mark" aria-hidden="true">
-                        ━━ ━━ ━━
-                    </span>
-                </div>
-            </section>
+            </>
         );
     }
     if (section.key === 'about') {
@@ -138,9 +254,12 @@ function SectionContent({
                             />
                         ) : (
                             <div className="mc-manifesto">
+                                <div className="mc-manifesto-badge">
+                                    <span>MC · ESTRADA LIVRE</span>
+                                </div>
                                 <Compass
-                                    size={54}
-                                    strokeWidth={1}
+                                    size={52}
+                                    strokeWidth={1.2}
                                     aria-hidden="true"
                                 />
                                 <p>
@@ -167,18 +286,27 @@ function SectionContent({
                         </div>
                         <CallToAction section={section} secondary />
                         <div className="mc-values">
-                            <span>
-                                <Route size={18} aria-hidden="true" />
-                                Estrada
-                            </span>
-                            <span>
-                                <Users size={18} aria-hidden="true" />
-                                Companheirismo
-                            </span>
-                            <span>
-                                <Compass size={18} aria-hidden="true" />
-                                Liberdade
-                            </span>
+                            <div className="mc-value-card">
+                                <Route size={20} aria-hidden="true" />
+                                <div>
+                                    <strong>Estrada</strong>
+                                    <span>Novos horizontes a cada viagem</span>
+                                </div>
+                            </div>
+                            <div className="mc-value-card">
+                                <Users size={20} aria-hidden="true" />
+                                <div>
+                                    <strong>Companheirismo</strong>
+                                    <span>Ninguém roda sozinho</span>
+                                </div>
+                            </div>
+                            <div className="mc-value-card">
+                                <Compass size={20} aria-hidden="true" />
+                                <div>
+                                    <strong>Liberdade</strong>
+                                    <span>A paixão sobre duas rodas</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -213,15 +341,202 @@ function SectionContent({
                             const Icon = icons[index % icons.length];
                             return (
                                 <article key={index} className="mc-activity">
-                                    <Icon
-                                        size={32}
-                                        strokeWidth={1.4}
-                                        aria-hidden="true"
-                                    />
+                                    <div className="mc-activity-header">
+                                        <span className="mc-activity-num">
+                                            0{index + 1}
+                                        </span>
+                                        <Icon
+                                            size={26}
+                                            strokeWidth={1.4}
+                                            aria-hidden="true"
+                                        />
+                                    </div>
                                     <p>{paragraph}</p>
                                 </article>
                             );
                         })}
+                    </div>
+                </div>
+            </section>
+        );
+    }
+    if (section.key === 'instagram') {
+        const instagramUrl = section.cta_url || 'https://instagram.com';
+        const displayHandle = instagramUrl.includes('instagram.com/')
+            ? '@' +
+              (instagramUrl
+                  .split('instagram.com/')[1]
+                  ?.split(/[/?#]/)[0] || 'motoclube')
+            : '@motoclube';
+
+        return (
+            <section
+                id="instagram"
+                className="mc-section mc-instagram"
+                aria-labelledby="instagram-title"
+            >
+                <div className="mc-container">
+                    <div className="mc-instagram-top">
+                        <div className="mc-instagram-heading">
+                            <p className="mc-eyebrow mc-eyebrow-copper">
+                                <span />
+                                <Instagram size={14} aria-hidden="true" />
+                                Galeria & Instagram
+                            </p>
+                            <h2 id="instagram-title" className="mc-title">
+                                {section.title}
+                            </h2>
+                            <div className="mc-prose mc-prose-light">
+                                {paragraphs.map((paragraph, index) => (
+                                    <p key={index}>{paragraph}</p>
+                                ))}
+                            </div>
+                        </div>
+
+                        <aside
+                            className="mc-instagram-profile"
+                            aria-label="Perfil do Instagram do Clube"
+                        >
+                            <div className="mc-instagram-profile-card">
+                                <div className="mc-instagram-profile-header">
+                                    <div className="mc-instagram-avatar">
+                                        <Instagram
+                                            size={28}
+                                            aria-hidden="true"
+                                        />
+                                    </div>
+                                    <div className="mc-instagram-meta">
+                                        <span className="mc-instagram-handle">
+                                            {displayHandle}
+                                        </span>
+                                        <span className="mc-instagram-verified">
+                                            <Shield
+                                                size={12}
+                                                aria-hidden="true"
+                                            />{' '}
+                                            Perfil Oficial
+                                        </span>
+                                    </div>
+                                </div>
+                                <p className="mc-instagram-desc">
+                                    Fotos dos encontros, passeios de fim de
+                                    semana e a rotina do nosso motoclube sobre
+                                    duas rodas.
+                                </p>
+                                <a
+                                    className="mc-button mc-button-copper mc-instagram-follow-btn"
+                                    href={instagramUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <Instagram
+                                        size={18}
+                                        aria-hidden="true"
+                                    />
+                                    {section.cta_label ||
+                                        'Seguir no Instagram'}
+                                    <ArrowUpRight
+                                        size={16}
+                                        aria-hidden="true"
+                                    />
+                                </a>
+                            </div>
+                        </aside>
+                    </div>
+
+                    {section.image_url && (
+                        <div className="mc-instagram-spotlight">
+                            <img
+                                src={section.image_url}
+                                alt="Foto em destaque do motoclube"
+                                loading="lazy"
+                                width={1200}
+                                height={480}
+                            />
+                        </div>
+                    )}
+
+                    <div
+                        className="mc-instagram-grid"
+                        role="region"
+                        aria-label="Fotos recentes do Instagram"
+                    >
+                        {instagramPosts.map((post) => (
+                            <a
+                                key={post.id}
+                                className="mc-instagram-card"
+                                href={instagramUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Foto no Instagram: ${post.caption}`}
+                            >
+                                <div className="mc-instagram-card-media">
+                                    <img
+                                        src={post.image}
+                                        alt={post.alt}
+                                        loading="lazy"
+                                        width={400}
+                                        height={400}
+                                    />
+                                    <div className="mc-instagram-card-tag">
+                                        {post.tag}
+                                    </div>
+                                </div>
+                                <div className="mc-instagram-overlay">
+                                    <div className="mc-instagram-overlay-top">
+                                        <Instagram
+                                            size={20}
+                                            aria-hidden="true"
+                                        />
+                                        <ArrowUpRight
+                                            size={18}
+                                            aria-hidden="true"
+                                        />
+                                    </div>
+                                    <p className="mc-instagram-caption">
+                                        {post.caption}
+                                    </p>
+                                    <div className="mc-instagram-stats">
+                                        <span>
+                                            <Heart
+                                                size={14}
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                            />
+                                            {post.likes}
+                                        </span>
+                                        <span>
+                                            <MessageCircle
+                                                size={14}
+                                                aria-hidden="true"
+                                            />
+                                            {post.comments}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+
+                    <div className="mc-instagram-banner">
+                        <div className="mc-instagram-banner-copy">
+                            <h3>Rode com a gente. Registre cada quilômetro.</h3>
+                            <p>
+                                Compartilhe suas fotos marcando{' '}
+                                <strong>#MotoclubeNaEstrada</strong> e o
+                                perfil oficial para aparecer em nossos
+                                destaques.
+                            </p>
+                        </div>
+                        <a
+                            className="mc-button mc-button-outline-light"
+                            href={instagramUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Ver mural completo no Instagram
+                            <ArrowUpRight size={18} aria-hidden="true" />
+                        </a>
                     </div>
                 </div>
             </section>
@@ -260,6 +575,10 @@ function SectionContent({
                                 aria-hidden="true"
                             />
                             <span>Área exclusiva</span>
+                        </div>
+                        <div className="mc-member-badge-pill">
+                            <Shield size={12} aria-hidden="true" />
+                            <span>Integrantes Cadastrados</span>
                         </div>
                         <h3>
                             Já faz parte
