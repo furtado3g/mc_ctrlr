@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Support\AccessPermissionCatalog;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-        foreach (['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao'] as $area) {
+        foreach (AccessPermissionCatalog::AREAS as $area) {
             foreach (['view', 'edit'] as $action) {
                 Gate::define("$area.$action", fn (User $user): bool => $user->canAccess($area, $action));
             }

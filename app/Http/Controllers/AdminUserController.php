@@ -52,7 +52,7 @@ class AdminUserController extends Controller
         $data = $request->validate([
             'active' => 'required|boolean',
             'permissions' => 'array',
-            'permissions.*.area' => 'required|in:cadastros,cobrancas,caixa,relatorios,administracao',
+            'permissions.*.area' => 'required|in:cadastros,cobrancas,caixa,relatorios,administracao,institucional',
             'permissions.*.action' => 'required|in:view,edit',
         ]);
         abort_if($user->id === $request->user()->id && ! $data['active'], 422, 'Não é possível desativar sua própria conta.');

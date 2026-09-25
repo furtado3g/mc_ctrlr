@@ -1,0 +1,35 @@
+import { Head, useForm } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+type Section = { key: string; title: string; body: string; image_path?: string | null; image_url?: string | null; cta_label?: string | null; cta_url?: string | null; enabled: boolean; position: number; image?: File | null; remove_image?: boolean };
+type Content = { name: string; logo_path?: string | null; logo_url?: string | null; logo?: File | null; remove_logo?: boolean; sections: Section[] };
+const sectionNames: Record<string, string> = { hero: 'Destaque', about: 'Sobre', activities: 'Atividades', contact: 'Contato' };
+
+export default function InstitutionalPageEditor({ published, draft, draftSavedAt, draftSavedBy, publishedAt, publishedBy, canEdit }: { published: Content; draft: Content | null; draftSavedAt: string | null; draftSavedBy: string | null; publishedAt: string | null; publishedBy: string | null; canEdit: boolean }) {
+    const initial = draft ?? published;
+    const form = useForm<Content>({ name: initial.name, logo_path: initial.logo_path ?? null, logo_url: initial.logo_url ?? null, logo: null, remove_logo: false, sections: initial.sections.map((s) => ({ ...s, image: null, remove_image: false })) });
+    const updateSection = (index: number, values: Partial<Section>) => form.setData('sections', form.data.sections.map((section, i) => i === index ? { ...section, ...values } : section));
+    const save = (event: React.FormEvent) => { event.preventDefault(); form.patch('/institutional-page/draft', { forceFormData: true }); };
+    const publish = () => form.post('/institutional-page/publish');
+    const Preview = ({ content }: { content: Content }) => <article className="rounded-lg border bg-muted/30 p-5"><p className="text-xs uppercase tracking-wide text-muted-foreground">Prévia</p><h2 className="mt-2 text-2xl font-bold">{content.name}</h2>{content.sections.filter((s) => s.enabled).sort((a,b) => a.position-b.position).map((section) => <section key={section.key} className="mt-5 border-t pt-4"><h3 className="font-semibold">{section.title || sectionNames[section.key]}</h3><p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">{section.body}</p></section>)}</article>;
+    return <main className="space-y-6 p-6"><Head title="Página institucional" /><div><h1 className="text-2xl font-semibold">Página institucional</h1><p className="mt-1 text-sm text-muted-foreground">Edite a apresentação pública e a identidade do sistema.</p></div>
+        <div className="rounded-lg border p-4 text-sm">{draft ? <>Rascunho salvo em {draftSavedAt ? new Date(draftSavedAt).toLocaleString() : 'data indisponível'}{draftSavedBy ? ` por ${draftSavedBy}` : ''}.</> : <>Sem rascunho salvo. Conteúdo publicado{publishedAt ? ` em ${new Date(publishedAt).toLocaleString()}` : ' de fallback'}{publishedBy ? ` por ${publishedBy}` : ''}.</>}</div>
+        {form.recentlySuccessful && <p role="status" className="text-sm text-green-700">Alteração concluída.</p>}
+        <div className="grid gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]"><form onSubmit={save} className="space-y-6" aria-label="Editar página institucional">
+            <fieldset disabled={!canEdit} className="space-y-5 disabled:opacity-70"><label className="grid gap-2 text-sm font-medium">Nome do motoclube<Input required maxLength={120} value={form.data.name} onChange={(e) => form.setData('name', e.target.value)} />{form.errors.name && <span className="text-destructive">{form.errors.name}</span>}</label>
+                <label className="grid gap-2 text-sm font-medium">Logo<input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => form.setData('logo', e.target.files?.[0] ?? null)} />{form.data.logo_url && <><img src={form.data.logo_url} alt="Prévia do logo" className="size-20 object-contain" /><button type="button" className="text-left text-sm text-destructive underline" onClick={() => form.setData('remove_logo', true)}>Remover logo</button></>}{form.errors.logo && <span className="text-destructive">{form.errors.logo}</span>}</label>
+                {form.data.sections.map((section, index) => <fieldset key={section.key} className="space-y-3 rounded-lg border p-4"><legend className="px-2 font-semibold">{sectionNames[section.key]}</legend>
+                    <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={section.enabled} onChange={(e) => updateSection(index, { enabled: e.target.checked })} />Exibir seção</label>
+                    <label className="grid gap-1 text-sm">Título<Input maxLength={160} value={section.title} onChange={(e) => updateSection(index, { title: e.target.value })} />{form.errors[`sections.${index}.title` as keyof typeof form.errors] && <span className="text-destructive">{form.errors[`sections.${index}.title` as keyof typeof form.errors]}</span>}</label>
+                    <label className="grid gap-1 text-sm">Texto<textarea className="min-h-28 rounded-md border bg-background p-3" maxLength={5000} value={section.body} onChange={(e) => updateSection(index, { body: e.target.value })} /></label>
+                    <div className="grid gap-3 md:grid-cols-2"><label className="grid gap-1 text-sm">Texto do link<Input maxLength={80} value={section.cta_label ?? ''} onChange={(e) => updateSection(index, { cta_label: e.target.value })} /></label><label className="grid gap-1 text-sm">Endereço local ou HTTPS<Input value={section.cta_url ?? ''} onChange={(e) => updateSection(index, { cta_url: e.target.value })} /></label></div>
+                    <label className="grid gap-1 text-sm">Imagem<input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => updateSection(index, { image: e.target.files?.[0] ?? null })} />{section.image_url && <><img src={section.image_url} alt="Prévia da imagem da seção" className="max-h-32 rounded object-cover" /><button type="button" className="text-left text-sm text-destructive underline" onClick={() => updateSection(index, { remove_image: true })}>Remover imagem</button></>}</label>
+                    <label className="grid max-w-32 gap-1 text-sm">Ordem<Input type="number" min={0} value={section.position} onChange={(e) => updateSection(index, { position: Number(e.target.value) })} /></label>
+                </fieldset>)}
+            </fieldset>
+            {canEdit && <div className="flex flex-wrap gap-3"><Button type="submit" disabled={form.processing}>Salvar rascunho</Button><Button type="button" variant="secondary" disabled={form.processing || !draft} onClick={publish}>Publicar</Button></div>}
+            {Object.entries(form.errors).filter(([key]) => key !== 'name').map(([key, message]) => <p key={key} role="alert" className="text-sm text-destructive">{key}: {message}</p>)}
+        </form><div className="space-y-4"><Preview content={{ ...form.data, sections: [...form.data.sections] }} /><div><p className="mb-2 text-sm font-medium">Versão atualmente pública</p><Preview content={published} /></div></div></div>
+    </main>;
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\InstitutionalBrand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Middleware;
@@ -47,11 +48,11 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
+            ...InstitutionalBrand::published(),
             'auth' => [
                 'user' => $request->user(),
                 'hasMemberProfile' => (bool) $request->user()?->member_id,
-                'permissions' => $request->user() ? collect(['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao'])->flatMap(fn (string $area) => collect(['view', 'edit'])->filter(fn (string $action) => $request->user()->canAccess($area, $action))->map(fn (string $action) => ['area' => $area, 'action' => $action])->values())->values() : [],
+                'permissions' => $request->user() ? collect(['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao', 'institucional'])->flatMap(fn (string $area) => collect(['view', 'edit'])->filter(fn (string $action) => $request->user()->canAccess($area, $action))->map(fn (string $action) => ['area' => $area, 'action' => $action])->values())->values() : [],
                 'draftScope' => $draftScope,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

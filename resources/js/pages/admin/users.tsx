@@ -20,6 +20,7 @@ const areas = [
     'caixa',
     'relatorios',
     'administracao',
+    'institucional',
 ];
 
 export default function AdminUsers({

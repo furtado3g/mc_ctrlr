@@ -5,7 +5,7 @@ namespace App\Support;
 class AccessPermissionCatalog
 {
     /** @var list<string> */
-    public const AREAS = ['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao'];
+    public const AREAS = ['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao', 'institucional'];
 
     /** @var list<string> */
     public const ACTIONS = ['view', 'edit'];

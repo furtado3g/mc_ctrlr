@@ -10,6 +10,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeeAdjustmentController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FeeGenerationController;
+use App\Http\Controllers\InstitutionalLandingController;
+use App\Http\Controllers\InstitutionalPageAdminController;
 use App\Http\Controllers\MemberAccountController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberMotorcycleController;
@@ -24,9 +26,12 @@ use App\Http\Controllers\TableQueryController;
 use App\Http\Middleware\EnsureActiveUser;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login')->name('home');
+Route::get('/', InstitutionalLandingController::class)->name('home');
 
 Route::middleware(['auth', 'verified', EnsureActiveUser::class])->group(function () {
+    Route::get('/institutional-page', [InstitutionalPageAdminController::class, 'index']);
+    Route::patch('/institutional-page/draft', [InstitutionalPageAdminController::class, 'save']);
+    Route::post('/institutional-page/publish', [InstitutionalPageAdminController::class, 'publish']);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/me/profile', [MemberProfileController::class, 'edit'])->name('member-profile.edit');
     Route::patch('/me/profile', [MemberProfileController::class, 'update'])->name('member-profile.update');

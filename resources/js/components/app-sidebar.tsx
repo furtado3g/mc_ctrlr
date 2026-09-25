@@ -8,6 +8,7 @@ import {
     FileBarChart,
     Settings,
     UserRound,
+    PanelsTopLeft,
 } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import AppLogo from '@/components/app-logo';
@@ -79,6 +80,8 @@ export function AppSidebar() {
             href: '/access-groups',
             icon: Shield,
         });
+    if (can('institucional'))
+        items.push({ title: 'Página institucional', href: '/institutional-page', icon: PanelsTopLeft });
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

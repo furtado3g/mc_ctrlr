@@ -62,6 +62,16 @@ class AccessGroupManagementTest extends TestCase
         ])->assertSessionHasErrors('permissions.0.action');
     }
 
+    public function test_administrator_can_grant_institutional_permissions(): void
+    {
+        $admin = User::factory()->create();
+        PermissionGrant::create(['user_id' => $admin->id, 'area' => 'administracao', 'action' => 'edit', 'granted_by' => $admin->id, 'granted_at' => now()]);
+        $this->actingAs($admin)->post('/access-groups', ['name' => 'Comunicação', 'active' => true, 'permissions' => [['area' => 'institucional', 'action' => 'view'], ['area' => 'institucional', 'action' => 'edit']]])->assertRedirect();
+        $group = AccessGroup::where('name', 'Comunicação')->firstOrFail();
+        $this->assertDatabaseHas('access_group_permissions', ['access_group_id' => $group->id, 'area' => 'institucional', 'action' => 'edit']);
+        $this->actingAs($admin)->post('/access-groups', ['name' => 'Inválido institucional', 'active' => true, 'permissions' => [['area' => 'institucional', 'action' => 'edit_joined_at']]])->assertSessionHasErrors('permissions.0.action');
+    }
+
     public function test_user_without_access_administration_cannot_change_groups(): void
     {
         $user = User::factory()->create();

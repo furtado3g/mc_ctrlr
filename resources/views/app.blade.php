@@ -30,8 +30,7 @@
             }
         </style>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="icon" href="{{ \App\Support\InstitutionalBrand::published()['logo'] ?? '/favicon.svg' }}">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         @fonts
