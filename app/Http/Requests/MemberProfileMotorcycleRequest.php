@@ -6,11 +6,21 @@ use App\Models\MemberMotorcycle;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class MemberMotorcycleRequest extends FormRequest
+class MemberProfileMotorcycleRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->canAccess('cadastros', 'edit') ?? false;
+        $member = $this->user()?->member;
+        if (! $member) {
+            return false;
+        }
+
+        $link = $this->route('link');
+        if ($link instanceof MemberMotorcycle) {
+            return $link->member_id === $member->id && $link->ended_at === null;
+        }
+
+        return true;
     }
 
     protected function prepareForValidation(): void
@@ -34,7 +44,7 @@ class MemberMotorcycleRequest extends FormRequest
             'manufacturer' => ['required', 'string', 'max:120'],
             'model' => ['required', 'string', 'max:120'],
             'year' => ['nullable', 'integer', 'between:1900,2100'],
-            'started_at' => ['required', 'date'],
+            'started_at' => ['required', 'date', 'before_or_equal:today'],
             'ended_at' => ['nullable', 'date', 'after_or_equal:started_at'],
         ];
     }

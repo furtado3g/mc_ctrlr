@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessGroupController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BillingPeriodController;
 use App\Http\Controllers\CashController;
@@ -9,8 +10,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeeAdjustmentController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\FeeGenerationController;
+use App\Http\Controllers\MemberAccountController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberMotorcycleController;
+use App\Http\Controllers\MemberProfileContactsController;
+use App\Http\Controllers\MemberProfileController;
+use App\Http\Controllers\MemberProfileMotorcycleController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
@@ -23,10 +28,24 @@ Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified', EnsureActiveUser::class])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/me/profile', [MemberProfileController::class, 'edit'])->name('member-profile.edit');
+    Route::patch('/me/profile', [MemberProfileController::class, 'update'])->name('member-profile.update');
+    Route::patch('/me/profile/contacts', [MemberProfileContactsController::class, 'update'])->name('member-profile.contacts');
+    Route::post('/me/profile/motorcycles', [MemberProfileMotorcycleController::class, 'store'])->name('member-profile.motorcycles.store');
+    Route::patch('/me/profile/motorcycles/{link}', [MemberProfileMotorcycleController::class, 'update'])->name('member-profile.motorcycles.update');
+    Route::delete('/me/profile/motorcycles/{link}', [MemberProfileMotorcycleController::class, 'destroy'])->name('member-profile.motorcycles.destroy');
+    Route::patch('/me/profile/membership-date', [MemberProfileController::class, 'updateMembershipDate'])->name('member-profile.membership-date');
     Route::post('/table-query', [TableQueryController::class, 'update']);
     Route::get('/admin/users', [AdminUserController::class, 'index']);
     Route::post('/admin/users', [AdminUserController::class, 'store']);
     Route::patch('/admin/users/{user}/permissions', [AdminUserController::class, 'permissions']);
+    Route::get('/access-groups', [AccessGroupController::class, 'index']);
+    Route::post('/access-groups', [AccessGroupController::class, 'store']);
+    Route::patch('/access-groups/{group}', [AccessGroupController::class, 'update']);
+    Route::delete('/access-groups/{group}', [AccessGroupController::class, 'destroy']);
+    Route::patch('/club-roles/{role}/access-group', [AccessGroupController::class, 'associateRole']);
+    Route::post('/members/{member}/account', [MemberAccountController::class, 'store']);
+    Route::patch('/members/{member}/account', [MemberAccountController::class, 'update']);
     Route::get('/members', [MemberController::class, 'index']);
     Route::post('/members', [MemberController::class, 'store']);
     Route::get('/members/{member}', [MemberController::class, 'show']);

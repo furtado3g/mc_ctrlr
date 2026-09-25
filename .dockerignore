@@ -9,5 +9,7 @@ vendor/
 !.env.example
 storage/logs/
 public/build/
-*.log
+Dockerfile*
+.dockerignore
+*.log*
 coverage/

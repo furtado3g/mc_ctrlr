@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\AssertAccessAdministratorRemains;
+use App\Actions\RecordAuditEvent;
 use App\Models\PermissionGrant;
 use App\Models\User;
 use App\Support\SessionTableQuery;
@@ -44,7 +46,7 @@ class AdminUserController extends Controller
         return back();
     }
 
-    public function permissions(Request $request, User $user): RedirectResponse
+    public function permissions(Request $request, User $user, RecordAuditEvent $audit, AssertAccessAdministratorRemains $accessAdmin): RedirectResponse
     {
         Gate::authorize('administracao.edit');
         $data = $request->validate([
@@ -61,7 +63,9 @@ class AdminUserController extends Controller
             }
         }
         abort_if($user->id === $request->user()->id && ! $keepsAdmin, 422, 'Não é possível remover sua própria permissão de administração.');
-        DB::transaction(function () use ($user, $data, $request) {
+        $hadAccessAdministrator = $accessAdmin->exists();
+        DB::transaction(function () use ($user, $data, $request, $audit, $accessAdmin, $hadAccessAdministrator) {
+            $before = ['active' => $user->active, 'permissions' => $user->permissionGrants()->get(['area', 'action'])->toArray()];
             $user->update(['active' => $data['active']]);
             $user->permissionGrants()->delete();
             foreach ($data['permissions'] ?? [] as $grant) {
@@ -70,6 +74,8 @@ class AdminUserController extends Controller
                     ['granted_by' => $request->user()->id, 'granted_at' => now()],
                 );
             }
+            $audit->execute('admin_account', $user->id, 'permissions_updated', $before, ['active' => $user->active, 'permissions' => $user->permissionGrants()->get(['area', 'action'])->toArray()], $request->user()->id);
+            $accessAdmin->execute($hadAccessAdministrator);
         });
 
         return back();

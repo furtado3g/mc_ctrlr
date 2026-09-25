@@ -28,7 +28,8 @@ class MemberController extends Controller
         $lastPage = max(1, (int) ceil($total / $query['per_page']));
         $query['page'] = min($query['page'], $lastPage);
         $queries->put($request->user()->id, 'members', $query);
-        $rows = $members->orderBy($query['sort'], $query['direction'])->orderBy('id')->forPage($query['page'], $query['per_page'])->get();
+        $rows = $members->select(['id', 'name', 'email', 'phone', 'joined_at', 'status', 'left_at'])
+            ->orderBy($query['sort'], $query['direction'])->orderBy('id')->forPage($query['page'], $query['per_page'])->get();
 
         return Inertia::render('members/index', [
             'members' => ['data' => $rows, 'total' => $total, 'current_page' => $query['page'], 'last_page' => $lastPage, 'per_page' => $query['per_page']],
@@ -48,9 +49,16 @@ class MemberController extends Controller
     public function show(Member $member): Response
     {
         Gate::authorize('cadastros.view');
+        $user = request()->user();
+        $canManageAccounts = $user->canAccess('administracao', 'edit');
+        $canEditMembers = $user->canAccess('cadastros', 'edit');
+        $member->load(['motorcycleLinks.motorcycle', 'roleAssignments.clubRole']);
+        $member->setRelation('user', $canManageAccounts ? $member->user()->first() : null);
 
         return Inertia::render('members/show', [
-            'member' => $member->load(['motorcycleLinks.motorcycle', 'roleAssignments.clubRole']),
+            'member' => $member,
+            'canManageAccounts' => $canManageAccounts,
+            'canEditMembers' => $canEditMembers,
             'roles' => ClubRole::where('active', true)->orderBy('sort_order')->get(),
         ]);
     }
