@@ -6,6 +6,7 @@ import {
     Eye,
     Globe,
     Image as ImageIcon,
+    LayoutTemplate,
     RotateCcw,
     Sparkles,
     Trash2,
@@ -15,6 +16,10 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import LayoutVariantSelector, {
+    type AppLayoutVariant,
+    type AuthLayoutVariant,
+} from '@/components/layout-variant-selector';
 
 type Section = {
     key: string;
@@ -36,6 +41,8 @@ type Content = {
     logo_url?: string | null;
     logo?: File | null;
     remove_logo?: boolean;
+    app_layout?: AppLayoutVariant;
+    auth_layout?: AuthLayoutVariant;
     sections: Section[];
 };
 
@@ -94,6 +101,8 @@ export default function InstitutionalPageEditor({
         logo_url: initial.logo_url ?? null,
         logo: null,
         remove_logo: false,
+        app_layout: initial.app_layout ?? 'sidebar',
+        auth_layout: initial.auth_layout ?? 'simple',
         sections: initial.sections.map((s) => ({
             ...s,
             image: null,
@@ -244,8 +253,16 @@ export default function InstitutionalPageEditor({
                                 {content.name || 'Nome do motoclube'}
                             </h2>
                             <p className="text-xs text-muted-foreground">
-                                Identidade visual da landing page
+                                Identidade visual e layouts
                             </p>
+                            <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                                <Badge variant="outline" className="text-[10px]">
+                                    App: {isDraft ? (form.data.app_layout === 'header' ? 'Header' : 'Sidebar') : (content.app_layout === 'header' ? 'Header' : 'Sidebar')}
+                                </Badge>
+                                <Badge variant="outline" className="text-[10px] capitalize">
+                                    Auth: {isDraft ? (form.data.auth_layout ?? 'simple') : (content.auth_layout ?? 'simple')}
+                                </Badge>
+                            </div>
                         </div>
                     </div>
                 </header>
@@ -495,6 +512,29 @@ export default function InstitutionalPageEditor({
                                     </span>
                                 )}
                             </div>
+                        </div>
+
+                        {/* Bloco Layouts do Sistema */}
+                        <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
+                            <div className="flex items-center gap-2 border-b pb-3">
+                                <LayoutTemplate className="size-5 text-primary" />
+                                <div>
+                                    <h2 className="font-semibold text-base leading-tight">
+                                        Layouts do Sistema
+                                    </h2>
+                                    <p className="text-xs text-muted-foreground">
+                                        Selecione as variantes visuais de layout para o painel autenticado e telas de entrada.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <LayoutVariantSelector
+                                appLayout={form.data.app_layout ?? 'sidebar'}
+                                authLayout={form.data.auth_layout ?? 'simple'}
+                                onAppLayoutChange={(val) => form.setData('app_layout', val)}
+                                onAuthLayoutChange={(val) => form.setData('auth_layout', val)}
+                                disabled={!canEdit}
+                            />
                         </div>
 
                         {/* Seções de Conteúdo e Fotos */}

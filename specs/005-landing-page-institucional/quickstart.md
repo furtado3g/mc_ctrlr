@@ -41,10 +41,10 @@ Os testes institucionais devem provar a rota pública sem login, o conteúdo pad
 
 1. Entre com uma conta administrativa de teste e configure um grupo de acesso/cargo com `institucional.view` e `institucional.edit`.
 2. Associe o grupo a um cargo vigente de um membro com conta vinculada ou use as concessões administrativas diretas compatíveis com a conta de teste.
-3. Abra a área de manutenção institucional, preencha nome, logo e seções, e salve como rascunho.
-4. Abra uma janela anônima em `/`; confirme que o visitante continua vendo o fallback ou a última versão publicada, sem nenhum conteúdo do rascunho.
+3. Abra a área de manutenção institucional, configure nome, logo, layouts (`app_layout`: `header`, `auth_layout`: `card`) e seções, e salve como rascunho.
+4. Abra uma janela anônima em `/` e `/login`; confirme que o visitante continua vendo os layouts e a marca padrão/publicada anterior, sem nenhum conteúdo do rascunho.
 5. Volte ao painel, confira a prévia administrativa e publique o rascunho.
-6. Atualize `/`, as telas de login e o painel; confirme nome/logo iguais e as seções ativas na ordem salva.
+6. Atualize `/`, as telas de login e o painel; confirme os novos layouts aplicados (`header` no painel, `card` no login), nome/logo iguais e as seções ativas na ordem salva.
 7. Remova `institucional.edit` mantendo `view`; confirme que a conta consegue consultar o editor, mas salvamento e publicação recebem `403`.
 8. Remova também `institucional.view`; confirme que a área administrativa recebe `403`, enquanto `/` continua pública.
 9. Tente salvar arquivo não permitido, maior que o limite ou conteúdo inválido; confirme erros visíveis e que a versão pública não muda.

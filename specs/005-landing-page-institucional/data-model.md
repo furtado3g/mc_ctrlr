@@ -24,6 +24,8 @@ Representa a única landing page institucional (`key = home`) e guarda seu estad
 {
   "name": "Nome público do motoclube",
   "logo_path": "institutional/<nome-gerado>.webp",
+  "app_layout": "sidebar",
+  "auth_layout": "simple",
   "sections": [
     {
       "key": "hero",
@@ -38,6 +40,11 @@ Representa a única landing page institucional (`key = home`) e guarda seu estad
   ]
 }
 ```
+
+### Layouts do sistema
+
+- `app_layout`: string enum (`sidebar` ou `header`). Padrão: `sidebar`. Define a estrutura de navegação do painel autenticado.
+- `auth_layout`: string enum (`simple`, `card` ou `split`). Padrão: `simple`. Define a estrutura visual das telas de autenticação (`/login`, `/register`, etc.).
 
 ### Seções conhecidas
 

@@ -53,4 +53,31 @@ class InstitutionalLandingPageTest extends TestCase
             ->where('content.sections.1.cta_url', 'https://instagram.com/estradeirosmc')
         );
     }
+
+    public function test_public_landing_and_auth_screens_expose_configured_layouts(): void
+    {
+        InstitutionalPage::create([
+            'key' => 'home',
+            'published_content' => [
+                'name' => 'Estradeiros MC',
+                'logo_path' => null,
+                'app_layout' => 'header',
+                'auth_layout' => 'split',
+                'sections' => [],
+            ],
+            'draft_content' => null,
+        ]);
+
+        $this->get('/')->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->where('name', 'Estradeiros MC')
+            ->where('app_layout', 'header')
+            ->where('auth_layout', 'split')
+        );
+
+        $this->get('/login')->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->where('name', 'Estradeiros MC')
+            ->where('app_layout', 'header')
+            ->where('auth_layout', 'split')
+        );
+    }
 }

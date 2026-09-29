@@ -18,12 +18,14 @@ class InstitutionalPageDefaults
         }
     }
 
-    /** @return array{name: string, logo_path: null, sections: list<array<string, mixed>>} */
+    /** @return array{name: string, logo_path: null, app_layout: string, auth_layout: string, sections: list<array<string, mixed>>} */
     public static function content(): array
     {
         return [
             'name' => config('app.name', 'Motoclube'),
             'logo_path' => null,
+            'app_layout' => 'sidebar',
+            'auth_layout' => 'simple',
             'sections' => [
                 ['key' => 'hero', 'title' => "A estrada aproxima.\nA irmandade fica.", 'body' => 'Duas rodas, novos caminhos e histórias que merecem ser compartilhadas. Conheça o nosso motoclube.', 'image_path' => null, 'cta_label' => 'Conheça o motoclube', 'cta_url' => '/#about', 'enabled' => true, 'position' => 0],
                 ['key' => 'about', 'title' => "Duas rodas.\nUm mesmo caminho.", 'body' => "A paixão por motos é o ponto de partida. O que torna cada viagem especial são as pessoas que encontramos pelo caminho.\n\nEste é um espaço para compartilhar histórias, cultivar amizades e viver o motociclismo com respeito, companheirismo e responsabilidade.", 'image_path' => null, 'cta_label' => null, 'cta_url' => null, 'enabled' => true, 'position' => 1],

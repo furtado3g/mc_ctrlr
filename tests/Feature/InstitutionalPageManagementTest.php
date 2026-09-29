@@ -126,4 +126,46 @@ class InstitutionalPageManagementTest extends TestCase
         $this->assertSame('instagram', $published['sections'][1]['key']);
         $this->assertSame('Galeria do Instagram', $published['sections'][1]['title']);
     }
+
+    public function test_layout_options_are_validated_saved_in_draft_and_published(): void
+    {
+        $editor = User::factory()->create();
+        $this->grant($editor, 'view');
+        $this->grant($editor, 'edit');
+
+        // Invalid layouts rejected
+        $invalid = $this->content('Clube Custom');
+        $invalid['app_layout'] = 'invalid_layout';
+        $invalid['auth_layout'] = 'invalid_auth';
+        $this->actingAs($editor)->patch('/institutional-page/draft', $invalid)
+            ->assertSessionHasErrors(['app_layout', 'auth_layout']);
+
+        // Valid layouts saved in draft
+        $valid = $this->content('Clube Custom');
+        $valid['app_layout'] = 'header';
+        $valid['auth_layout'] = 'card';
+
+        $this->actingAs($editor)->patch('/institutional-page/draft', $valid)->assertRedirect();
+        $page = InstitutionalPage::firstOrFail();
+        $this->assertSame('header', $page->draft_content['app_layout']);
+        $this->assertSame('card', $page->draft_content['auth_layout']);
+
+        // Published content remains default before explicit publish
+        $this->actingAs($editor)->get('/dashboard')->assertInertia(fn (Assert $page) => $page
+            ->where('app_layout', 'sidebar')
+            ->where('auth_layout', 'simple')
+        );
+
+        // Publish draft
+        $this->actingAs($editor)->post('/institutional-page/publish')->assertRedirect();
+        $page = $page->fresh();
+        $this->assertSame('header', $page->published_content['app_layout']);
+        $this->assertSame('card', $page->published_content['auth_layout']);
+
+        // Authenticated and auth areas now reflect published layouts
+        $this->actingAs($editor)->get('/dashboard')->assertInertia(fn (Assert $page) => $page
+            ->where('app_layout', 'header')
+            ->where('auth_layout', 'card')
+        );
+    }
 }

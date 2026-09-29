@@ -26,11 +26,17 @@
 - **Justificativa**: `AccessPermissionCatalog`, `AccessGroupRequest`, `AccessGroupController` e os Gates de `AppServiceProvider` formam o padrão existente. A área dedicada separa manutenção institucional de caixa, cadastros e administração geral. Membros recebem direitos pelo grupo do cargo vigente; contas administrativas não vinculadas usam as concessões diretas existentes.
 - **Alternativas consideradas**: Reutilizar `administracao.edit` (mais amplo que o necessário); adicionar ação especial para cada operação (duplicaria controles para rascunho e publicação).
 
-### Nome e logo compartilhados
+### Nome, logo e layouts compartilhados
 
-- **Decisão**: O backend resolve sempre a identidade publicada e a compartilha em uma propriedade de aplicação comum. Usar o mesmo valor para landing, sidebar/cabeçalho, autenticação e título de documento; manter ícones estáticos alternativos quando não houver logo.
-- **Justificativa**: Hoje o nome de painel vem de `HandleInertiaRequests`, o título de `resources/views/app.blade.php` e `resources/js/app.tsx` usa `VITE_APP_NAME`; os componentes autenticados usam `AppLogo`, enquanto layouts de autenticação usam um SVG estático. A identidade precisa ter fonte única para não divergir.
-- **Alternativas consideradas**: Alterar somente a landing; manter nome da aplicação em variável de build. Ambas deixam o sistema autenticado com a marca antiga.
+- **Decisão**: O backend resolve sempre a identidade publicada e a compartilha em propriedades comuns (`name`, `logo`, `app_layout`, `auth_layout`). Usar o mesmo valor para landing, cabeçalho/sidebar, autenticação e título; manter fallbacks estáticos quando não configurados.
+- **Justificativa**: Hoje o app possui variantes prontas em `resources/js/layouts/app/` (`AppSidebarLayout`, `AppHeaderLayout`) e `resources/js/layouts/auth/` (`AuthSimpleLayout`, `AuthCardLayout`, `AuthSplitLayout`). Tornar isso configurável via snapshot institucional permite ao administrador alternar o design visual sem modificar código nem adicionar bibliotecas.
+- **Alternativas consideradas**: Configuração via `.env` ou arquivo de tema em disco (não permitiria edição pelo painel admin em runtime); criar temas customizados com CSS dinâmico (complexidade desnecessária para o escopo).
+
+### Configuração de layouts no painel admin
+
+- **Decisão**: O editor institucional em `/institutional-page` passa a conter seletores visuais para `app_layout` (`sidebar` | `header`) e `auth_layout` (`simple` | `card` | `split`), com prévias e valores padrão. As alterações entram no fluxo de rascunho e entram em vigor globalmente após publicação explícita.
+- **Justificativa**: Centralizar identidade (nome, logo) e layouts do sistema no mesmo formulário e fluxo de publicação garante que mudanças visuais de marca e casca sejam coordenadas, atômicas e reversíveis.
+- **Alternativas consideradas**: Criar uma página de configurações de sistema separada (duplicaria rotas, permissões e lógica de persistência quando o modelo institucional já atende perfeitamente).
 
 ### Armazenamento de imagens
 

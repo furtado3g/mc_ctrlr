@@ -26,6 +26,8 @@ class InstitutionalPageAdminController extends Controller
             if ($content === null) {
                 return null;
             }
+            $content['app_layout'] = in_array($content['app_layout'] ?? null, ['sidebar', 'header'], true) ? $content['app_layout'] : 'sidebar';
+            $content['auth_layout'] = in_array($content['auth_layout'] ?? null, ['simple', 'card', 'split'], true) ? $content['auth_layout'] : 'simple';
             $logoPath = $content['logo_path'] ?? null;
             $content['logo_url'] = is_string($logoPath) && Storage::disk('public')->exists($logoPath) ? Storage::disk('public')->url($logoPath) : null;
             $content['sections'] = array_map(function (array $section): array {

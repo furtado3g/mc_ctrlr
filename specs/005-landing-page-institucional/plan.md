@@ -6,7 +6,7 @@
 
 ## Summary
 
-Criar uma página pública do motoclube em `/` e uma área administrativa para manter seu conteúdo e sua identidade visual. A página terá seções institucionais predefinidas. O conteúdo e a identidade terão uma versão publicada e um rascunho separado, com publicação explícita. O acesso administrativo usará uma permissão específica nos grupos de acesso existentes. O nome e o logo publicados serão compartilhados pela página pública, autenticação e painel.
+Criar uma página pública do motoclube em `/` e uma área administrativa para manter seu conteúdo, identidade visual e opções de layout do sistema. A página terá seções institucionais predefinidas. O administrador poderá alterar nome, logos e os layouts do sistema (app: `sidebar` ou `header`; auth: `simple`, `card` ou `split`). O conteúdo, a identidade e os layouts terão uma versão publicada e um rascunho separado, com publicação explícita. O acesso administrativo usará uma permissão específica nos grupos de acesso existentes. O nome, o logo e as opções de layout publicados serão compartilhados globalmente pelo sistema.
 
 ## Technical Context
 
@@ -39,7 +39,7 @@ O arquivo de constituição contém somente placeholders do template, sem princ�
 - **Conteúdo em rascunho e publicação**: guardar um snapshot publicado e um snapshot de rascunho no registro da landing. O comando de publicação substitui o snapshot público em uma transação e limpa os assets antigos somente após sucesso. Isso mantém a publicação anterior disponível em caso de falha e evita criar um histórico de versões, que está fora do escopo.
 - **Seções estruturadas**: representar as seções predefinidas como uma lista validada de chaves e campos conhecidos (apresentação, sobre, atividades, contato e chamada para ação). O conteúdo textual será texto simples; URLs de chamadas serão validadas. Não será aceito HTML livre.
 - **Permissão granular**: incluir `institucional.view` e `institucional.edit` no catálogo central de permissões. A primeira controla acesso à área administrativa e a segunda controla salvar rascunho e publicar. Os grupos por cargo concedem essas permissões separadamente das áreas de caixa e cadastros.
-- **Identidade compartilhada**: resolver nome e logo publicados no backend e compartilhá-los para a landing, layout do painel, layouts de autenticação e metadados de título. O fallback atual permanece enquanto não houver conteúdo publicado.
+- **Identidade e layouts compartilhados**: resolver nome, logo e variantes de layout (`app_layout`: `sidebar`|`header`, `auth_layout`: `simple`|`card`|`split`) no backend e compartilhá-los via `InstitutionalBrand::published()`. O frontend alterna dinamicamente entre os layouts já existentes do starter kit, preservando fallbacks enquanto não houver publicação.
 - **Armazenamento de mídia**: usar o disco público já configurado para imagens destinadas à publicação, com nomes gerados pelo armazenamento, tipos PNG/JPEG/WebP e limite inicial de 5 MB por imagem. O caminho de rascunho não será retornado pela página pública. Assets referenciados pela versão publicada só serão removidos depois de uma publicação substituta bem-sucedida.
 - **Auditoria**: manter o escopo de auditoria definido pela aplicação sem criar histórico de versões da página. Registrar ator e horário da publicação; snapshots completos permanecem limitados ao estado corrente publicado e ao rascunho.
 

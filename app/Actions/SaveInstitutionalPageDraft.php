@@ -15,7 +15,15 @@ class SaveInstitutionalPageDraft
         $page = InstitutionalPage::query()->home()->first();
         $oldDraftPaths = InstitutionalPageAssets::paths($page?->draft_content);
         $data = $request->validated();
-        $snapshot = ['name' => trim($data['name']), 'logo_path' => ! empty($data['remove_logo']) ? null : ($data['logo_path'] ?? $page?->draft_content['logo_path'] ?? $page?->published_content['logo_path'] ?? null), 'sections' => []];
+        $appLayout = $data['app_layout'] ?? $page?->draft_content['app_layout'] ?? $page?->published_content['app_layout'] ?? 'sidebar';
+        $authLayout = $data['auth_layout'] ?? $page?->draft_content['auth_layout'] ?? $page?->published_content['auth_layout'] ?? 'simple';
+        $snapshot = [
+            'name' => trim($data['name']),
+            'logo_path' => ! empty($data['remove_logo']) ? null : ($data['logo_path'] ?? $page?->draft_content['logo_path'] ?? $page?->published_content['logo_path'] ?? null),
+            'app_layout' => in_array($appLayout, ['sidebar', 'header'], true) ? $appLayout : 'sidebar',
+            'auth_layout' => in_array($authLayout, ['simple', 'card', 'split'], true) ? $authLayout : 'simple',
+            'sections' => [],
+        ];
         $uploaded = [];
         try {
             if ($request->file('logo')) {

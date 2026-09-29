@@ -655,6 +655,7 @@ function SectionContent({
 
 export default function Landing({ content }: { content: Content }) {
     const { logo } = usePage().props as { logo?: string | null };
+    const [logoError, setLogoError] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuButton = useRef<HTMLButtonElement>(null);
     const sections = [...content.sections].sort(
@@ -694,8 +695,14 @@ export default function Landing({ content }: { content: Content }) {
                         href="#inicio"
                         aria-label={`${content.name}, início`}
                     >
-                        {logo && (
-                            <img src={logo} alt="" width={48} height={48} />
+                        {logo && !logoError && (
+                            <img
+                                src={logo}
+                                alt={`Logotipo ${content.name}`}
+                                width={48}
+                                height={48}
+                                onError={() => setLogoError(true)}
+                            />
                         )}
                         <span>
                             {content.name}

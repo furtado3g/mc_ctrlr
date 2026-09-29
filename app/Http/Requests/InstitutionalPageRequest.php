@@ -22,6 +22,8 @@ class InstitutionalPageRequest extends FormRequest
             'logo' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
             'logo_path' => ['nullable', 'string', 'max:255'],
             'remove_logo' => ['nullable', 'boolean'],
+            'app_layout' => ['nullable', 'string', 'in:sidebar,header'],
+            'auth_layout' => ['nullable', 'string', 'in:simple,card,split'],
             'sections' => ['required', 'array', 'max:5'],
             'sections.*.key' => ['required', 'string', 'in:hero,about,activities,instagram,contact', 'distinct'],
             'sections.*.title' => ['nullable', 'string', 'max:160'],

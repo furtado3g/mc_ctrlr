@@ -22,15 +22,15 @@ Todas exigem sessão autenticada, conta ativa e e-mail verificado, além da perm
 ### `PATCH /institutional-page/draft`
 
 - **Permissão**: `institucional.edit`.
-- **Entrada**: nome institucional e snapshot completo das seções. Imagens opcionais são recebidas como arquivos PNG, JPEG ou WebP de até 5 MB; texto é tratado como texto simples; chamadas aceitam caminho local ou URL HTTPS.
-- **Sucesso**: valida e substitui o rascunho corrente, registra autor/horário, retorna redirecionamento para o painel com confirmação. A página pública permanece igual.
+- **Entrada**: nome institucional, variantes de layout (`app_layout`: `sidebar`|`header`, `auth_layout`: `simple`|`card`|`split`) e snapshot completo das seções. Imagens opcionais são recebidas como arquivos PNG, JPEG ou WebP de até 5 MB; texto é tratado como texto simples; chamadas aceitam caminho local ou URL HTTPS.
+- **Sucesso**: valida e substitui o rascunho corrente, registra autor/horário, retorna redirecionamento para o painel com confirmação. A página pública e os layouts em produção permanecem iguais.
 - **Falha**: `403` sem permissão; validação com erros por campo; falha ao persistir não altera o snapshot público nem substitui o rascunho anterior válido.
 
 ### `POST /institutional-page/publish`
 
 - **Permissão**: `institucional.edit`.
 - **Entrada**: sem conteúdo editável; publica o rascunho validado corrente.
-- **Sucesso**: troca o snapshot publicado, registra publicador/horário, limpa o rascunho e responde com confirmação. Nome, logo e seções da landing e do sistema passam a usar a mesma identidade publicada.
+- **Sucesso**: troca o snapshot publicado, registra publicador/horário, limpa o rascunho e responde com confirmação. Nome, logo, layouts do sistema e seções da landing passam a usar o novo estado publicado.
 - **Sem rascunho**: retorna validação legível e não altera a publicação.
 - **Falha durante a publicação**: mantém integralmente o snapshot público anterior e conserva o rascunho para nova tentativa.
 
@@ -42,10 +42,10 @@ Todas exigem sessão autenticada, conta ativa e e-mail verificado, além da perm
 - A página pública `/` não exige nem concede permissão administrativa.
 - A checagem de cada operação ocorre no servidor; ocultar controles na interface não é controle de segurança.
 
-## Identidade compartilhada
+## Identidade e layouts compartilhados
 
-- O nome e o logo compartilhados pelo servidor representam sempre o estado publicado.
-- O mesmo estado deve alimentar a landing, o cabeçalho/navegação autenticados, telas de autenticação e título da aplicação.
+- O nome, o logo e as opções de layout (`app_layout`, `auth_layout`) compartilhados pelo servidor representam sempre o estado publicado.
+- O mesmo estado deve alimentar a landing, o cabeçalho/navegação autenticados (aplicando `AppSidebarLayout` ou `AppHeaderLayout`), telas de autenticação (aplicando `AuthSimpleLayout`, `AuthCardLayout` ou `AuthSplitLayout`) e título da aplicação.
 - Se o logo não estiver configurado ou não puder ser lido, usar o ícone institucional padrão e manter o nome textual acessível.
 
 ## Contrato dos campos das seções

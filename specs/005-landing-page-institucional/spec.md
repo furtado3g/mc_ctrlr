@@ -14,6 +14,10 @@
 
 - Q: Quando um administrador salva alterações na landing page, elas devem aparecer imediatamente em `/` ou aguardar uma ação separada de publicação? → A: Salvar como rascunho e publicar por uma ação separada.
 
+### Session 2026-09-29
+
+- Q: Como deve funcionar a alteração de layouts do sistema e logos pelo admin? → A: O administrador pode selecionar a variante de layout das áreas autenticadas (`sidebar` ou `header`) e das telas de autenticação (`simple`, `card` ou `split`), além do logo e nome institucional. As escolhas entram no fluxo de rascunho e entram em vigor globalmente após publicação explícita. Default: `sidebar` para app e `simple` para autenticação.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Manter a página e a identidade institucional (Priority: P1)
@@ -79,10 +83,13 @@ Uma pessoa visitante, sem precisar entrar no sistema, acessa `/` e consulta a ap
 - **FR-015**: O sistema MUST permitir salvar alterações institucionais como rascunho e exigir uma ação explícita de publicação para que elas substituam a versão pública vigente.
 - **FR-016**: A área administrativa MUST identificar se o conteúdo está publicado ou se há alterações em rascunho aguardando publicação.
 - **FR-017**: Se a publicação não puder ser concluída, o sistema MUST preservar integralmente a versão pública anterior e manter o rascunho disponível para nova tentativa.
+- **FR-018**: O sistema MUST permitir que o responsável autorizado selecione a variante de layout das áreas autenticadas (`sidebar` ou `header`) e a variante de layout das telas de autenticação (`simple`, `card` ou `split`).
+- **FR-019**: Os layouts selecionados e o logo MUST ser refletidos globalmente no sistema após a publicação, preservando os layouts e logo anteriores enquanto as alterações estiverem em rascunho.
+- **FR-020**: O sistema MUST manter fallbacks padrão (`sidebar` para app e `simple` para autenticação) quando nenhum layout customizado estiver publicado.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Identidade institucional**: Nome e logo que identificam o motoclube na página pública e nas áreas do sistema que exibem a marca.
+- **Identidade institucional**: Nome, logo e opções de layout do sistema (`app_layout` e `auth_layout`) que identificam e estilizam a aplicação pública e autenticada.
 - **Landing page institucional**: Conteúdo público apresentado na rota principal, com suas informações, chamadas e seções institucionais.
 - **Seção institucional**: Parte identificável da página com título, conteúdo, estado ativo/inativo e posição de apresentação.
 - **Permissão de manutenção institucional**: Regra de acesso específica que autoriza a edição da identidade e do conteúdo da página por um usuário autenticado.
