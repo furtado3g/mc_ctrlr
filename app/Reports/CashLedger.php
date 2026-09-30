@@ -7,9 +7,10 @@ use App\Models\CashMovement;
 class CashLedger
 {
     /** @return array{opening_cents: int, income_cents: int, expense_cents: int, closing_cents: int} */
-    public function totals(string $start, string $end): array
+    public function totals(string $start, string $end, ?int $regionalId = null): array
     {
-        $base = CashMovement::where('status', 'active');
+        $base = CashMovement::where('status', 'active')
+            ->when($regionalId !== null, fn ($query) => $query->where('regional_id', $regionalId));
         $opening = (clone $base)->whereDate('occurred_at', '<', $start)
             ->selectRaw("COALESCE(SUM(CASE WHEN type = 'in' THEN amount_cents ELSE -amount_cents END), 0) AS total")
             ->value('total');

@@ -1,7 +1,9 @@
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
+import { Building2, Globe } from 'lucide-react';
 import { useState } from 'react';
 import MovementForm, { CorrectionForm } from '@/components/cash/movement-form';
 import { ReceiptUpload } from '@/components/cash/receipt-upload';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DataTable } from '@/components/tables/data-table';
@@ -12,6 +14,9 @@ type Totals = { opening_cents: number; income_cents: number; expense_cents: numb
 const money = (cents: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cents / 100);
 
 export default function Cash({ start, end, totals, movements, tableQuery }: { start: string; end: string; totals: Totals; movements: { data: Movement[]; total: number }; tableQuery: TableQuery }) {
+    const { currentRegional } = usePage().props as {
+        currentRegional?: { id: number; name: string; code: string } | null;
+    };
     const [editing, setEditing] = useState<number | null>(null);
     const columns: TableColumn<Movement>[] = [
         { key: 'occurred_at', label: 'Data', sortable: true, render: item => item.occurred_at.slice(0, 10) },
@@ -22,7 +27,22 @@ export default function Cash({ start, end, totals, movements, tableQuery }: { st
         { key: 'receipt', label: 'Comprovante', priority: 'secondary', render: item => item.receipt ? <a className="underline" href={`/cash/movements/${item.id}/receipt`}>Abrir comprovante</a> : <ReceiptUpload movementId={item.id} /> },
         { key: 'status', label: 'Ações', priority: 'secondary', render: item => <div className="flex flex-wrap gap-2">{item.source === 'manual' && item.status === 'active' && <><Button size="sm" variant="outline" onClick={() => { const reason = prompt('Motivo do estorno'); if (reason) router.post(`/cash/movements/${item.id}/reverse`, { reason }); }}>Estornar</Button><Button size="sm" variant="outline" onClick={() => setEditing(editing === item.id ? null : item.id)}>Corrigir</Button></>}{editing === item.id && <CorrectionForm movement={item} onClose={() => setEditing(null)} />}</div> },
     ];
-    return <div className="space-y-6 p-6"><Head title="Caixa" /><h1 className="text-2xl font-semibold">Caixa do motoclube</h1>
+    return <div className="space-y-6 p-6">
+        <Head title="Caixa" />
+        <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-semibold">Caixa do motoclube</h1>
+            {currentRegional ? (
+                <Badge variant="outline" className="gap-1 text-xs font-normal">
+                    <Building2 className="size-3 text-primary" />
+                    {currentRegional.name} ({currentRegional.code})
+                </Badge>
+            ) : (
+                <Badge variant="secondary" className="gap-1 text-xs font-normal">
+                    <Globe className="size-3 text-emerald-600" />
+                    Todas as Regionais
+                </Badge>
+            )}
+        </div>
         <div className="grid gap-3 md:grid-cols-4">{Object.entries({ 'Saldo inicial': totals.opening_cents, Entradas: totals.income_cents, Saídas: totals.expense_cents, 'Saldo final': totals.closing_cents }).map(([label, value]) => <div className="rounded-lg border p-4" key={label}><div className="text-muted-foreground">{label}</div><strong className="text-xl">{money(value)}</strong></div>)}</div>
         <MovementForm />
         <DataTable table="cash" rows={movements.data} total={movements.total} query={tableQuery} columns={columns} rowKey={item => item.id} filters={({ setFilter }) => <>

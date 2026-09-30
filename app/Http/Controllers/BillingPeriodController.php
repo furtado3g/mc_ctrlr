@@ -35,7 +35,15 @@ class BillingPeriodController extends Controller
     public function store(BillingPeriodRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-            $period = BillingPeriod::create($request->validated());
+            $data = $request->validated();
+            $user = $request->user();
+            if (! $user->is_global && $user->regional_id !== null) {
+                $data['regional_id'] = $user->regional_id;
+            } elseif ($user->is_global && session('active_regional_id') !== null) {
+                $data['regional_id'] = session('active_regional_id');
+            }
+
+            $period = BillingPeriod::create($data);
             app(RecordAuditEvent::class)->execute('billing_period', $period->id, 'create', null, $period->toArray(), $request->user()->id);
         });
 

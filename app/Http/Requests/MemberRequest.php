@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Member;
+use App\Models\RegionalCity;
 use App\Rules\ValidCpf;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -11,7 +12,19 @@ class MemberRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->canAccess('cadastros', 'edit') ?? false;
+        $user = $this->user();
+        if (! ($user?->canAccess('cadastros', 'edit') ?? false)) {
+            return false;
+        }
+
+        $member = $this->route('member');
+        if ($member instanceof Member && ! $user->is_global) {
+            if ($member->regional_id !== $user->regional_id) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /** @return array<string, mixed> */
@@ -36,6 +49,34 @@ class MemberRequest extends FormRequest
             'neighborhood' => ['nullable', 'string', 'max:120'],
             'city' => ['nullable', 'string', 'max:120'],
             'state' => ['nullable', 'string', 'size:2', Rule::in(['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'])],
+            'regional_city_id' => [
+                'nullable',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    if (! $value) {
+                        return;
+                    }
+
+                    $user = $this->user();
+                    $targetRegionalId = null;
+
+                    if ($user && ! $user->is_global) {
+                        $targetRegionalId = $user->regional_id;
+                    } else {
+                        $member = $this->route('member');
+                        if ($member instanceof Member) {
+                            $targetRegionalId = $member->regional_id;
+                        } else {
+                            $targetRegionalId = session('active_regional_id') ?? $this->input('regional_id') ?? 1;
+                        }
+                    }
+
+                    $city = RegionalCity::find($value);
+                    if (! $city || (int) $city->regional_id !== (int) $targetRegionalId) {
+                        $fail('A cidade selecionada não pertence à regional deste membro.');
+                    }
+                },
+            ],
             'emergency_contact_name' => ['nullable', 'string', 'max:255', 'required_with:emergency_contact_relationship,emergency_contact_phone'],
             'emergency_contact_relationship' => ['nullable', 'string', 'max:120', 'required_with:emergency_contact_name,emergency_contact_phone'],
             'emergency_contact_phone' => ['nullable', 'string', 'max:40', 'required_with:emergency_contact_name,emergency_contact_relationship'],

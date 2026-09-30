@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToRegional;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Member extends Model
 {
+    use BelongsToRegional;
+
     protected $fillable = [
+        'regional_id',
+        'regional_city_id',
         'name', 'email', 'phone', 'joined_at', 'status', 'left_at',
         'cpf', 'birth_date', 'postal_code', 'address_line', 'address_number',
         'address_complement', 'neighborhood', 'city', 'state',
@@ -43,5 +49,11 @@ class Member extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
+    }
+
+    /** @return BelongsTo<RegionalCity, $this> */
+    public function regionalCity(): BelongsTo
+    {
+        return $this->belongsTo(RegionalCity::class, 'regional_city_id');
     }
 }

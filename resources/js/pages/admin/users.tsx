@@ -1,5 +1,6 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
 import {
+    Building2,
     CalendarDays,
     Check,
     CheckCircle2,
@@ -54,7 +55,16 @@ type User = {
     name: string;
     email: string;
     active: boolean;
+    is_global?: boolean;
+    regional_id?: number | null;
+    regional?: { id: number; name: string; code: string } | null;
     permission_grants: Grant[];
+};
+
+type RegionalOption = {
+    id: number;
+    name: string;
+    code: string;
 };
 
 const moduleConfig: Record<
@@ -98,9 +108,11 @@ const areaKeys = Object.keys(moduleConfig);
 export default function AdminUsers({
     users,
     tableQuery,
+    availableRegionals = [],
 }: {
     users: { data: User[]; total: number };
     tableQuery: TableQuery;
+    availableRegionals?: RegionalOption[];
 }) {
     const { auth } = usePage().props as {
         auth: { draftScope?: string | null };
@@ -110,11 +122,19 @@ export default function AdminUsers({
         name: string;
         email: string;
         password: string;
+        is_global: boolean;
+        regional_id: string | number;
     }>({
         scope: auth.draftScope,
         formKey: 'admin-users:create',
         recordKey: 'new',
-        initialValues: { name: '', email: '', password: '' },
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+            is_global: false,
+            regional_id: availableRegionals[0]?.id ?? '',
+        },
     });
     const { form } = draft;
 
@@ -235,13 +255,91 @@ export default function AdminUsers({
                                         id="admin-user-password"
                                         type="password"
                                         autoComplete="new-password"
-                                        placeholder="Mínimo 8 caracteres"
+                                        placeholder="Mínimo 12 caracteres"
                                         value={form.data.password}
                                         onChange={(e) =>
                                             form.setData('password', e.target.value)
                                         }
                                     />
                                 </FormField>
+                            </div>
+
+                            <div className="grid gap-4 sm:grid-cols-2 pt-2 border-t">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Escopo de Acesso</label>
+                                    <div className="flex gap-4">
+                                        <label className="flex items-center gap-2 text-xs cursor-pointer border rounded-md p-2.5 flex-1 hover:bg-muted/40 transition-colors">
+                                            <input
+                                                type="radio"
+                                                name="is_global"
+                                                checked={!form.data.is_global}
+                                                onChange={() => {
+                                                    form.setData('is_global', false);
+                                                    if (!form.data.regional_id && availableRegionals.length > 0) {
+                                                        form.setData('regional_id', availableRegionals[0].id);
+                                                    }
+                                                }}
+                                                className="text-primary focus:ring-primary"
+                                            />
+                                            <div>
+                                                <span className="font-semibold block flex items-center gap-1.5">
+                                                    <Building2 className="size-3.5 text-primary" />
+                                                    Regional
+                                                </span>
+                                                <span className="text-[11px] text-muted-foreground">
+                                                    Acesso limitado a uma divisão específica
+                                                </span>
+                                            </div>
+                                        </label>
+
+                                        <label className="flex items-center gap-2 text-xs cursor-pointer border rounded-md p-2.5 flex-1 hover:bg-muted/40 transition-colors">
+                                            <input
+                                                type="radio"
+                                                name="is_global"
+                                                checked={form.data.is_global}
+                                                onChange={() => form.setData('is_global', true)}
+                                                className="text-primary focus:ring-primary"
+                                            />
+                                            <div>
+                                                <span className="font-semibold block flex items-center gap-1.5">
+                                                    <Globe className="size-3.5 text-emerald-600" />
+                                                    Global
+                                                </span>
+                                                <span className="text-[11px] text-muted-foreground">
+                                                    Diretoria Nacional (todas as regionais)
+                                                </span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    {form.errors.is_global && (
+                                        <p className="text-xs text-destructive">{form.errors.is_global}</p>
+                                    )}
+                                </div>
+
+                                {!form.data.is_global && (
+                                    <FormField
+                                        id="admin-user-regional"
+                                        label="Divisão Regional vinculada"
+                                        required
+                                        error={form.errors.regional_id}
+                                    >
+                                        <select
+                                            id="admin-user-regional"
+                                            className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                            value={form.data.regional_id}
+                                            onChange={(e) =>
+                                                form.setData('regional_id', e.target.value ? Number(e.target.value) : '')
+                                            }
+                                        >
+                                            <option value="">Selecione uma regional...</option>
+                                            {availableRegionals.map((reg) => (
+                                                <option key={reg.id} value={reg.id}>
+                                                    {reg.name} ({reg.code})
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </FormField>
+                                )}
                             </div>
                         </AdminForm>
                     </CardContent>
@@ -334,10 +432,36 @@ export default function AdminUsers({
                                     ),
                             },
                             {
+                                key: 'regional',
+                                label: 'Escopo / Regional',
+                                render: (user) =>
+                                    user.is_global ? (
+                                        <Badge variant="secondary" className="gap-1 text-xs">
+                                            <Globe className="size-3 text-emerald-600" />
+                                            Global
+                                        </Badge>
+                                    ) : (
+                                        <Badge variant="outline" className="gap-1 text-xs">
+                                            <Building2 className="size-3 text-primary" />
+                                            {user.regional?.name || 'Regional'}
+                                            {user.regional?.code && (
+                                                <span className="font-mono text-[10px] text-muted-foreground">
+                                                    ({user.regional.code})
+                                                </span>
+                                            )}
+                                        </Badge>
+                                    ),
+                            },
+                            {
                                 key: 'permissions',
                                 label: 'Permissões & Acesso',
                                 priority: 'secondary',
-                                render: (user) => <UserPermissionsModal user={user} />,
+                                render: (user) => (
+                                    <UserPermissionsModal
+                                        user={user}
+                                        availableRegionals={availableRegionals}
+                                    />
+                                ),
                             },
                         ]}
                         filters={({ setFilter }) => (
@@ -368,11 +492,19 @@ export default function AdminUsers({
     );
 }
 
-function UserPermissionsModal({ user }: { user: User }) {
+function UserPermissionsModal({
+    user,
+    availableRegionals = [],
+}: {
+    user: User;
+    availableRegionals?: RegionalOption[];
+}) {
     const [open, setOpen] = useState(false);
 
     const form = useForm({
         active: user.active,
+        is_global: Boolean(user.is_global),
+        regional_id: user.regional_id ?? (availableRegionals[0]?.id ?? ''),
         permissions: user.permission_grants.map((p) => `${p.area}.${p.action}`),
     });
 
@@ -438,7 +570,13 @@ function UserPermissionsModal({ user }: { user: User }) {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        form.patch(`/admin/users/${user.id}/permissions`, {
+                        form.transform((data) => ({
+                            ...data,
+                            permissions: data.permissions.map((p) => {
+                                const [area, action] = p.split('.');
+                                return { area, action };
+                            }),
+                        })).patch(`/admin/users/${user.id}/permissions`, {
                             onSuccess: () => {
                                 form.setDefaults();
                                 setOpen(false);
@@ -472,6 +610,82 @@ function UserPermissionsModal({ user }: { user: User }) {
                             />
                             <span>{form.data.active ? 'Ativo' : 'Inativo'}</span>
                         </label>
+                    </div>
+
+                    {/* Escopo de Acesso / Regional */}
+                    <div className="space-y-3 rounded-lg border p-4 bg-muted/20">
+                        <div>
+                            <span className="font-semibold text-sm block">Escopo e Divisão Regional</span>
+                            <span className="text-xs text-muted-foreground">
+                                Define se o usuário tem visão nacional irrestrita ou restrita a uma divisão regional.
+                            </span>
+                        </div>
+                        <div className="flex gap-4">
+                            <label className="flex items-center gap-2 text-xs cursor-pointer border rounded-md p-2.5 flex-1 bg-background hover:bg-muted/40 transition-colors">
+                                <input
+                                    type="radio"
+                                    name={`user-scope-${user.id}`}
+                                    checked={!form.data.is_global}
+                                    onChange={() => {
+                                        form.setData('is_global', false);
+                                        if (!form.data.regional_id && availableRegionals.length > 0) {
+                                            form.setData('regional_id', availableRegionals[0].id);
+                                        }
+                                    }}
+                                    className="text-primary focus:ring-primary"
+                                />
+                                <div>
+                                    <span className="font-semibold block flex items-center gap-1.5">
+                                        <Building2 className="size-3.5 text-primary" />
+                                        Regional
+                                    </span>
+                                    <span className="text-[11px] text-muted-foreground">
+                                        Restrito a uma regional
+                                    </span>
+                                </div>
+                            </label>
+
+                            <label className="flex items-center gap-2 text-xs cursor-pointer border rounded-md p-2.5 flex-1 bg-background hover:bg-muted/40 transition-colors">
+                                <input
+                                    type="radio"
+                                    name={`user-scope-${user.id}`}
+                                    checked={form.data.is_global}
+                                    onChange={() => form.setData('is_global', true)}
+                                    className="text-primary focus:ring-primary"
+                                />
+                                <div>
+                                    <span className="font-semibold block flex items-center gap-1.5">
+                                        <Globe className="size-3.5 text-emerald-600" />
+                                        Global
+                                    </span>
+                                    <span className="text-[11px] text-muted-foreground">
+                                        Diretoria Nacional
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+
+                        {!form.data.is_global && (
+                            <div className="pt-2">
+                                <label className="text-xs font-medium block mb-1">
+                                    Divisão Regional vinculada
+                                </label>
+                                <select
+                                    className="h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-xs shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                    value={form.data.regional_id}
+                                    onChange={(e) =>
+                                        form.setData('regional_id', e.target.value ? Number(e.target.value) : '')
+                                    }
+                                >
+                                    <option value="">Selecione uma regional...</option>
+                                    {availableRegionals.map((reg) => (
+                                        <option key={reg.id} value={reg.id}>
+                                            {reg.name} ({reg.code})
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                     </div>
 
                     {/* Barra de atalhos */}

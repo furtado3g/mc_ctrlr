@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToRegional;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,7 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CashMovement extends Model
 {
-    protected $fillable = ['type', 'amount_cents', 'occurred_at', 'category', 'description', 'source', 'payment_id', 'status', 'created_by'];
+    use BelongsToRegional;
+
+    protected $fillable = ['regional_id', 'type', 'amount_cents', 'occurred_at', 'category', 'description', 'source', 'payment_id', 'status', 'created_by'];
 
     protected function casts(): array
     {

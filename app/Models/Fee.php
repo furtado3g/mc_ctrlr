@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToRegional;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,7 +10,9 @@ use Illuminate\Support\Carbon;
 
 class Fee extends Model
 {
-    protected $fillable = ['member_id', 'billing_period_id', 'issued_amount_cents', 'adjustment_cents', 'adjustment_reason'];
+    use BelongsToRegional;
+
+    protected $fillable = ['regional_id', 'member_id', 'billing_period_id', 'issued_amount_cents', 'adjustment_cents', 'adjustment_reason'];
 
     protected function casts(): array
     {

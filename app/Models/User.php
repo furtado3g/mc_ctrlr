@@ -17,7 +17,9 @@ use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
- * @property int $id
+ * @property int|null $member_id
+ * @property int|null $regional_id
+ * @property bool $is_global
  * @property string $name
  * @property string $email
  * @property Carbon|null $email_verified_at
@@ -29,12 +31,18 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password', 'active', 'email_verified_at', 'member_id'])]
+#[Fillable(['name', 'email', 'password', 'active', 'email_verified_at', 'member_id', 'regional_id', 'is_global'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+
+    /** @return BelongsTo<Regional, $this> */
+    public function regional(): BelongsTo
+    {
+        return $this->belongsTo(Regional::class);
+    }
 
     /** @return HasMany<PermissionGrant, $this> */
     public function permissionGrants(): HasMany
@@ -92,6 +100,7 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     {
         return [
             'active' => 'boolean',
+            'is_global' => 'boolean',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             /* @chisel-2fa */

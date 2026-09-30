@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToRegional;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BillingPeriod extends Model
 {
-    protected $fillable = ['competence', 'due_at', 'default_amount_cents', 'status'];
+    use BelongsToRegional;
+
+    protected $fillable = ['regional_id', 'competence', 'due_at', 'default_amount_cents', 'status'];
 
     protected function casts(): array
     {

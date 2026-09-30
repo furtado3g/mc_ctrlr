@@ -18,12 +18,15 @@ class GenerateFees
             if ($period->status !== 'open') {
                 throw ValidationException::withMessages(['period' => 'Período encerrado.']);
             }
-            $ids = Member::where('status', 'active')->pluck('id');
+            $ids = Member::where('status', 'active')
+                ->where('regional_id', $period->regional_id)
+                ->pluck('id');
             $created = 0;
             foreach ($ids as $id) {
                 $created += Fee::insertOrIgnore([
                     'member_id' => $id,
                     'billing_period_id' => $period->id,
+                    'regional_id' => $period->regional_id,
                     'issued_amount_cents' => $period->default_amount_cents,
                     'adjustment_cents' => 0,
                     'created_at' => now(),

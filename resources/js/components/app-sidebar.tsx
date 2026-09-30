@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
+    Building2,
     CalendarDays,
     FileBarChart,
     LayoutGrid,
@@ -14,6 +15,7 @@ import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
+import { RegionalBadge } from '@/components/regional-badge';
 import {
     Sidebar,
     SidebarContent,
@@ -31,6 +33,7 @@ const footerNavItems: NavItem[] = [];
 export function AppSidebar() {
     const { auth } = usePage().props as unknown as {
         auth: {
+            user?: { is_global?: boolean };
             permissions?: { area: string; action: string }[];
             hasMemberProfile?: boolean;
         };
@@ -118,6 +121,13 @@ export function AppSidebar() {
             { title: 'Usuários', href: '/admin/users', icon: Users },
             { title: 'Grupos de acesso', href: '/access-groups', icon: Shield },
         );
+        if (auth?.user?.is_global) {
+            adminItems.push({
+                title: 'Divisões Regionais',
+                href: '/admin/regionals',
+                icon: Building2,
+            });
+        }
     }
     if (adminItems.length > 0) {
         items.push({
@@ -139,6 +149,9 @@ export function AppSidebar() {
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
+                <div className="px-2 pt-1">
+                    <RegionalBadge />
+                </div>
             </SidebarHeader>
 
             <SidebarContent>
