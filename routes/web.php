@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccessGroupController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BillingPeriodController;
+use App\Http\Controllers\BirthdayPostController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\ClubRoleController;
@@ -45,6 +46,8 @@ Route::middleware(['auth', 'verified', EnsureActiveUser::class])->group(function
     Route::post('/feed/posts/{post}/likes', [FeedInteractionController::class, 'toggleLike'])->name('feed.posts.likes');
     Route::post('/feed/posts/{post}/comments', [FeedInteractionController::class, 'storeComment'])->name('feed.posts.comments.store');
     Route::delete('/feed/comments/{comment}', [FeedInteractionController::class, 'destroyComment'])->name('feed.comments.destroy');
+    Route::get('/birthdays', [BirthdayPostController::class, 'index'])->name('birthdays.index');
+    Route::get('/birthdays/members/search', [BirthdayPostController::class, 'searchMembers'])->name('birthdays.members.search');
     Route::get('/me/profile', [MemberProfileController::class, 'edit'])->name('member-profile.edit');
     Route::patch('/me/profile', [MemberProfileController::class, 'update'])->name('member-profile.update');
     Route::post('/me/profile/avatar', [UserProfileController::class, 'uploadAvatar'])->name('user-profile.avatar.store');

@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     Building2,
+    Cake,
     CalendarDays,
     FileBarChart,
     LayoutGrid,
@@ -53,6 +54,11 @@ export function AppSidebar() {
             title: 'Feed Social',
             href: '/feed',
             icon: MessageSquareShare,
+        },
+        {
+            title: 'Aniversariantes',
+            href: '/birthdays',
+            icon: Cake,
         },
     ];
 

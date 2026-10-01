@@ -27,13 +27,17 @@ trait BelongsToRegional
             $user = Auth::user();
 
             if (! $user) {
+                $firstRegional = Regional::first();
+                if ($firstRegional) {
+                    $model->regional_id = $firstRegional->id;
+                }
                 return;
             }
 
             if (! $user->is_global && $user->regional_id !== null) {
                 $model->regional_id = $user->regional_id;
             } elseif ($user->is_global) {
-                $model->regional_id = session('active_regional_id') ?? 1;
+                $model->regional_id = session('active_regional_id') ?? (Regional::first()?->id ?? 1);
             }
         });
     }

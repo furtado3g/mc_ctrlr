@@ -18,7 +18,8 @@ class DynamicTablesTest extends TestCase
         $user = User::factory()->create();
         PermissionGrant::create(['user_id' => $user->id, 'area' => 'cadastros', 'action' => 'view', 'granted_by' => $user->id, 'granted_at' => now()]);
         $now = now();
-        foreach (array_chunk(array_map(fn (int $id) => ['name' => sprintf('Alpha Member %05d', $id), 'joined_at' => today()->toDateString(), 'status' => 'active', 'created_at' => $now, 'updated_at' => $now], range(1, 10000)), 500) as $chunk) {
+        $regionalId = \App\Models\Regional::first()?->id ?? 1;
+        foreach (array_chunk(array_map(fn (int $id) => ['name' => sprintf('Alpha Member %05d', $id), 'joined_at' => today()->toDateString(), 'status' => 'active', 'regional_id' => $regionalId, 'created_at' => $now, 'updated_at' => $now], range(1, 10000)), 500) as $chunk) {
             DB::table('members')->insert($chunk);
         }
         Member::create(['name' => 'Zulu Search Target', 'email' => 'target@example.test', 'joined_at' => today(), 'status' => 'active']);

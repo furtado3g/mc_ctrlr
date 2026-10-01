@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\InstitutionalBrand;
 use App\Models\Regional;
+use App\Support\InstitutionalBrand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Middleware;

@@ -13,7 +13,7 @@ class ManageCashMovement
     public function create(array $data, int $userId): CashMovement
     {
         return DB::transaction(function () use ($data, $userId) {
-            $user = \Illuminate\Support\Facades\Auth::user();
+            $user = \App\Models\User::find($userId) ?? \Illuminate\Support\Facades\Auth::user();
             if (! isset($data['regional_id']) && $user) {
                 if (! $user->is_global && $user->regional_id !== null) {
                     $data['regional_id'] = $user->regional_id;

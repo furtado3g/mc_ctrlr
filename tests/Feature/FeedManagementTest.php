@@ -84,8 +84,8 @@ class FeedManagementTest extends TestCase
         $reg1 = Regional::create(['name' => 'Campinas', 'code' => 'CPS', 'city' => 'Campinas', 'state' => 'SP']);
         $reg2 = Regional::create(['name' => 'Santos', 'code' => 'STS', 'city' => 'Santos', 'state' => 'SP']);
 
-        $user1 = User::factory()->create(['regional_id' => $reg1->id]);
-        $user2 = User::factory()->create(['regional_id' => $reg2->id]);
+        $user1 = User::factory()->create(['is_global' => false, 'regional_id' => $reg1->id]);
+        $user2 = User::factory()->create(['is_global' => false, 'regional_id' => $reg2->id]);
 
         $post1 = Post::create(['user_id' => $user1->id, 'regional_id' => $reg1->id, 'content' => 'Post de Campinas']);
         $post2 = Post::create(['user_id' => $user2->id, 'regional_id' => $reg2->id, 'content' => 'Post de Santos']);

@@ -32,6 +32,10 @@ return new class extends Migration
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement("SELECT setval('regionals_id_seq', (SELECT MAX(id) FROM regionals))");
+        }
     }
 
     /**

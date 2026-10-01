@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'active' => true,
+            'is_global' => true,
             'remember_token' => Str::random(10),
             /* @chisel-2fa */
             'two_factor_secret' => null,

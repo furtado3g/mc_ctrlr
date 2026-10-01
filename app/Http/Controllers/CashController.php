@@ -17,12 +17,17 @@ class CashController extends Controller
     {
         Gate::authorize('caixa.view');
         $schema = app(TableQueryRules::class)->schema('cash');
-        $query = app(SessionTableQuery::class)->get($request->user()->id, 'cash', ['search' => '', 'filters' => ['start' => now()->startOfMonth()->toDateString(), 'end' => today()->toDateString()], 'sort' => $schema['default_sort'], 'direction' => 'desc', 'page' => 1, 'per_page' => 30]);
+        $query = app(SessionTableQuery::class)->get($request->user()->id, 'cash', ['search' => '', 'filters' => [], 'sort' => $schema['default_sort'], 'direction' => 'desc', 'page' => 1, 'per_page' => 30]);
         $filterValidator = app(TableQueryRules::class)->normalize('cash', $query);
         $query = $filterValidator;
-        $start = $query['filters']['start'] ?? now()->startOfMonth()->toDateString();
-        $end = $query['filters']['end'] ?? today()->toDateString();
-        $base = CashMovement::query()->whereBetween('occurred_at', [$start, $end])->when(isset($query['filters']['type']), fn ($builder) => $builder->where('type', $query['filters']['type']))->when($query['search'] !== '', fn ($builder) => $builder->where(fn ($where) => $where->where('description', 'like', '%'.$query['search'].'%')->orWhere('category', 'like', '%'.$query['search'].'%')));
+        $start = $query['filters']['start'] ?? null;
+        $end = $query['filters']['end'] ?? null;
+        $base = CashMovement::query()
+            ->when($start && $end, fn ($b) => $b->whereBetween('occurred_at', [$start, $end]))
+            ->when($start && ! $end, fn ($b) => $b->whereDate('occurred_at', '>=', $start))
+            ->when(! $start && $end, fn ($b) => $b->whereDate('occurred_at', '<=', $end))
+            ->when(isset($query['filters']['type']), fn ($builder) => $builder->where('type', $query['filters']['type']))
+            ->when($query['search'] !== '', fn ($builder) => $builder->where(fn ($where) => $where->where('description', 'like', '%'.$query['search'].'%')->orWhere('category', 'like', '%'.$query['search'].'%')));
         $total = (clone $base)->count();
         $lastPage = max(1, (int) ceil($total / $query['per_page']));
         $query['page'] = min($query['page'], $lastPage);
@@ -32,7 +37,7 @@ class CashController extends Controller
         $rows = $base->with(['receipt', 'corrections'])->orderBy($sort, $direction)->orderBy('id')->forPage($query['page'], $query['per_page'])->get();
 
         return Inertia::render('cash/index', [
-            'start' => $start, 'end' => $end, 'tableQuery' => $query,
+            'start' => $start ?? now()->startOfMonth()->toDateString(), 'end' => $end ?? today()->toDateString(), 'tableQuery' => $query,
             'totals' => $ledger->totals($start, $end),
             'movements' => ['data' => $rows, 'total' => $total],
         ]);

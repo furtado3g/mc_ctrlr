@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MemberRequest;
 use App\Models\ClubRole;
 use App\Models\Member;
-use App\Services\TableQueryService;
-use App\Services\TableRulesService;
+use App\Support\SessionTableQuery;
+use App\Support\TableQueryRules;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -15,7 +15,7 @@ use Inertia\Response;
 
 class MemberController extends Controller
 {
-    public function index(Request $request, TableRulesService $rules, TableQueryService $queries): Response
+    public function index(Request $request, SessionTableQuery $queries, TableQueryRules $rules): Response
     {
         Gate::authorize('cadastros.view');
         $schema = $rules->schema('members');
