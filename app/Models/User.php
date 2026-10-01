@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -37,6 +38,8 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+
+    protected $appends = ['avatar', 'road_nickname', 'bio'];
 
     /** @return BelongsTo<Regional, $this> */
     public function regional(): BelongsTo
@@ -89,6 +92,39 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    /** @return HasOne<UserProfile, $this> */
+    public function profile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    /** @return HasMany<Post, $this> */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /** @return HasMany<PostLike, $this> */
+    public function postLikes(): HasMany
+    {
+        return $this->hasMany(PostLike::class);
+    }
+
+    public function getAvatarAttribute(): ?string
+    {
+        return $this->profile?->avatar_url;
+    }
+
+    public function getRoadNicknameAttribute(): ?string
+    {
+        return $this->profile?->road_nickname;
+    }
+
+    public function getBioAttribute(): ?string
+    {
+        return $this->profile?->bio;
     }
 
     /**

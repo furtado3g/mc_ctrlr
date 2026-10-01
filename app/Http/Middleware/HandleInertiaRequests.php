@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
         $availableRegionals = [];
 
         if ($user) {
+            $user->loadMissing('profile');
             $draftScope = $request->session()->get('ui_draft_scope');
             if (! \is_string($draftScope) || $draftScope === '') {
                 $draftScope = (string) Str::uuid();

@@ -3,6 +3,8 @@ import { Form, Head, usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 /* @end-chisel-email-verification */
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import AvatarUploadForm from '@/components/profile/avatar-upload-form';
+import ProfileDetailsForm from '@/components/profile/profile-details-form';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -130,6 +132,11 @@ export default function Profile(
                         </>
                     )}
                 </Form>
+
+                <div className="space-y-6 pt-6">
+                    <AvatarUploadForm />
+                    <ProfileDetailsForm />
+                </div>
             </div>
 
         </>

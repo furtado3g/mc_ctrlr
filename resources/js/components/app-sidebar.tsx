@@ -4,6 +4,7 @@ import {
     CalendarDays,
     FileBarChart,
     LayoutGrid,
+    MessageSquareShare,
     PanelsTopLeft,
     Settings,
     Shield,
@@ -47,6 +48,11 @@ export function AppSidebar() {
             title: 'Dashboard',
             href: dashboard(),
             icon: LayoutGrid,
+        },
+        {
+            title: 'Feed Social',
+            href: '/feed',
+            icon: MessageSquareShare,
         },
     ];
 

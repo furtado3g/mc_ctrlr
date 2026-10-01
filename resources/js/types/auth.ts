@@ -3,6 +3,8 @@ export type User = {
     name: string;
     email: string;
     avatar?: string;
+    road_nickname?: string | null;
+    bio?: string | null;
     email_verified_at: string | null;
     /* @chisel-2fa */
     two_factor_enabled?: boolean;

@@ -4,6 +4,8 @@ import { FormField } from '@/components/forms/form-field';
 import { Input } from '@/components/ui/input';
 import ProfileContactsForm from '@/components/members/profile-contacts-form';
 import ProfileMotorcycles from '@/components/members/profile-motorcycles';
+import AvatarUploadForm from '@/components/profile/avatar-upload-form';
+import ProfileDetailsForm from '@/components/profile/profile-details-form';
 
 type Member = {
     id: number;
@@ -106,6 +108,9 @@ export default function MemberProfile({
                     clube.
                 </p>
             </header>
+
+            <AvatarUploadForm />
+            <ProfileDetailsForm />
 
             <section className="space-y-3 rounded-lg border p-4">
                 <h2 className="text-lg font-semibold">Data de ingresso</h2>
