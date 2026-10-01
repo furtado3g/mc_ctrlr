@@ -24,6 +24,7 @@ class AdminUserSeeder extends Seeder
                 'email' => 'admin@teste.com',
                 'password' => 'sadmin123',
                 'active' => true,
+                'is_global' => true,
                 'email_verified_at' => now(),
             ]);
         } else {
@@ -31,6 +32,7 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Administrador',
                 'password' => 'sadmin123',
                 'active' => true,
+                'is_global' => true,
                 'email_verified_at' => $user->email_verified_at ?? now(),
             ]);
         }

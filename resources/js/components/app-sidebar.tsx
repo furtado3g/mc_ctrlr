@@ -3,10 +3,13 @@ import {
     Building2,
     Cake,
     CalendarDays,
+    CalendarRange,
     FileBarChart,
+    FileText,
     LayoutGrid,
     MessageSquareShare,
     PanelsTopLeft,
+    Receipt,
     Settings,
     Shield,
     UserRound,
@@ -89,24 +92,24 @@ export function AppSidebar() {
     // Subnível: Financeiro
     const financialItems: NavItem[] = [];
     if (can('cobrancas')) {
-        financialItems.push({
-            title: 'Mensalidades',
-            href: '/fees',
-            icon: CalendarDays,
-        });
+        financialItems.push(
+            {
+                title: 'Mensalidades',
+                href: '/fees',
+                icon: CalendarDays,
+            },
+            {
+                title: 'Períodos de Cobrança',
+                href: '/billing-periods',
+                icon: CalendarRange,
+            },
+        );
     }
     if (can('caixa')) {
         financialItems.push({
-            title: 'Caixa',
+            title: 'Livro Caixa',
             href: '/cash',
             icon: Wallet,
-        });
-    }
-    if (can('relatorios')) {
-        financialItems.push({
-            title: 'Relatórios',
-            href: '/reports/fees',
-            icon: FileBarChart,
         });
     }
     if (financialItems.length > 0) {
@@ -114,6 +117,35 @@ export function AppSidebar() {
             title: 'Financeiro',
             icon: Wallet,
             items: financialItems,
+        });
+    }
+
+    // Subnível: Relatórios
+    const reportItems: NavItem[] = [];
+    if (can('relatorios')) {
+        reportItems.push(
+            {
+                title: 'Mensalidades',
+                href: '/reports/fees',
+                icon: FileBarChart,
+            },
+            {
+                title: 'Livro Caixa',
+                href: '/reports/cash',
+                icon: FileText,
+            },
+            {
+                title: 'Prestação Fiscal',
+                href: '/reports/fiscal',
+                icon: Receipt,
+            },
+        );
+    }
+    if (reportItems.length > 0) {
+        items.push({
+            title: 'Relatórios',
+            icon: FileBarChart,
+            items: reportItems,
         });
     }
 
