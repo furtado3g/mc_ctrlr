@@ -1,0 +1,8 @@
+version: 3
+agent:
+  authtoken: "<your-authtoken>"
+endpoints:
+  - name: your_endpoint_name
+    url: https://04mc.ngrok-free.dev
+    upstream:
+      url: 8000

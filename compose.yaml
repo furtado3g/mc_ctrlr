@@ -5,7 +5,7 @@ services:
     volumes:
       - .:/var/www/html
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     environment:
       DB_CONNECTION: pgsql
       DB_HOST: db
@@ -16,6 +16,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - app
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
   db:
     image: postgres:17-alpine
     environment:
@@ -30,12 +38,13 @@ services:
       timeout: 3s
       retries: 10
   node:
+    profiles: ["dev"]
     image: node:24-alpine
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
     ports:
-      - "5173:5173"
+      - "127.0.0.1:5173:5173"
     command: npm run dev -- --host 0.0.0.0
 
 volumes:

@@ -22,6 +22,19 @@ docker-compose up -d app
 
 O painel estará em `http://localhost:8000`. O comando `mc:create-admin` solicita nome, email e senha do primeiro administrador; não há cadastro público. Alternativamente, as variáveis `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL` e `INITIAL_ADMIN_PASSWORD` podem ser definidas antes de executar o seeder. A criação do banco `mc_ctrlr_test` é necessária apenas na primeira instalação. Os cenários de validação estão em `specs/001-gestao-motoclube/quickstart.md` e `specs/002-formularios-tabelas-dinamicas/quickstart.md`.
 
+## Acesso via ngrok
+
+O Nginx reverso fica disponível em `http://localhost:8080`. Para servir os assets compilados pelo mesmo domínio do Laravel e abrir o projeto pelo ngrok:
+
+```bash
+docker-compose run --rm node npm run build
+rm -f public/hot
+docker-compose up -d --build
+ngrok http 8080
+```
+
+O serviço Vite fica no perfil `dev` para não substituir os assets compilados durante o acesso pelo ngrok. Para desenvolvimento local com HMR, inicie-o com `docker-compose --profile dev up -d node`.
+
 ## Verificações
 
 Crie `mc_ctrlr_test` uma vez com o comando acima; os testes usam esse banco isolado.
