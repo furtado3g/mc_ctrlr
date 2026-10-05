@@ -28,8 +28,16 @@ class DatabaseSeeder extends Seeder
             'name' => config('mc.initial_admin_name'),
             'password' => $password,
             'active' => true,
+            'is_global' => true,
             'email_verified_at' => now(),
         ]);
+
+        $user->forceFill([
+            'active' => true,
+            'is_global' => true,
+            'regional_id' => null,
+            'email_verified_at' => $user->email_verified_at ?? now(),
+        ])->save();
 
         foreach (['cadastros', 'cobrancas', 'caixa', 'relatorios', 'administracao', 'institucional'] as $area) {
             foreach (['view', 'edit'] as $action) {
