@@ -47,5 +47,31 @@ docker-compose run --rm node npm run build
 docker-compose run --rm app php tests/Performance/benchmark.php
 ```
 
-O banco é PostgreSQL no serviço `db`. Comprovantes ficam em disco privado no volume da aplicação e só podem ser baixados mediante autorização.
-# mc_ctrlr
+O banco é PostgreSQL no serviço `db`.
+
+## Armazenamento Persistente e Cache Redis
+
+A infraestrutura utiliza volumes persistentes no host localizados fora da árvore de código:
+
+```text
+data/
+├── redis/                  # Dados persistentes do Redis (AOF / RDB)
+└── storage/                # Referência de armazenamento físico da aplicação
+    ├── public/             # Mídias públicas (banners, logos, fotos) servidas diretamente pelo Nginx
+    ├── receipts/           # Comprovantes financeiros e anexos privados
+    └── private/            # Documentos confidenciais e exportações
+```
+
+### Entrega Estática via Nginx
+Arquivos públicos gravados em `Storage::disk('public')` são servidos com cabeçalhos de cache de 30 dias diretamente via Nginx em `http://localhost:8080/storage/{caminho_do_arquivo}`.
+
+### Permissões no Host (Linux/macOS)
+Em ambientes baseados em Linux/macOS, garanta permissões de escrita para os contêineres:
+```bash
+chmod -R 775 data/storage data/redis
+```
+
+### Comandos de Diagnóstico Operacional
+- `docker compose exec app php artisan app:cache-health` (ou `--json`): Verifica conexão, latência e fallback do cache Redis.
+- `docker compose exec app php artisan app:storage-health` (ou `--json`): Inspeciona diretórios de storage, permissões de escrita e validade do symlink público.
+

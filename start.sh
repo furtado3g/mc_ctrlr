@@ -6,9 +6,12 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
+echo "Verifying persistent host data directories..."
+mkdir -p data/storage/public data/storage/receipts data/storage/private data/redis
+
 echo "Building and starting containers..."
 docker compose build app
-docker compose up -d db
+docker compose up -d db redis
 
 echo "Installing PHP dependencies..."
 docker compose run --rm app composer install --no-scripts
@@ -20,7 +23,7 @@ echo "Running migrations and seeders..."
 docker compose run --rm app php artisan migrate --seed
 
 echo "Creating storage symlink..."
-docker compose run --rm app php artisan storage:link
+docker compose run --rm app php artisan storage:link --force
 
 echo "Creating test database if not exists..."
 docker compose exec -T db createdb -U mc_ctrlr mc_ctrlr_test 2>/dev/null || true
@@ -32,7 +35,7 @@ echo "Installing frontend dependencies & building assets..."
 docker compose run --rm node npm install
 docker compose run --rm node npm run build
 
-echo "Starting application and nginx..."
-docker compose up -d app nginx
+echo "Starting application, redis and nginx..."
+docker compose up -d app nginx redis
 
 echo "Ready: http://localhost:8000 (app) or http://localhost:8080 (nginx)"

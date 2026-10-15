@@ -27,6 +27,8 @@ class PublishInstitutionalPageDraft
             Storage::disk('public')->delete($path);
         }
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateLanding();
+
         return $published;
     }
 }

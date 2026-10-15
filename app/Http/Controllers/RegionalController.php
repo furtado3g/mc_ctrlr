@@ -96,6 +96,8 @@ class RegionalController extends Controller
 
         $regional->load('cities');
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
+
         $audit->execute(
             'regional',
             $regional->id,
@@ -177,6 +179,8 @@ class RegionalController extends Controller
 
         $regional->refresh()->load('cities');
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
+
         $audit->execute(
             'regional',
             $regional->id,
@@ -213,6 +217,8 @@ class RegionalController extends Controller
         $before = ['active' => $regional->active];
         $regional->active = ! $regional->active;
         $regional->save();
+
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
 
         $audit->execute(
             'regional',

@@ -24,6 +24,8 @@ class RoleAssignmentController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions($member->user?->id);
+
         return back();
     }
 
@@ -38,6 +40,8 @@ class RoleAssignmentController extends Controller
             $audit->execute('role_assignment', $assignment->id, 'updated', $before, $assignment->only(['member_id', 'club_role_id', 'started_at', 'ended_at']), $request->user()->id);
             $accessAdmin->execute($hadAccessAdministrator);
         });
+
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions($assignment->member?->user?->id);
 
         return back();
     }

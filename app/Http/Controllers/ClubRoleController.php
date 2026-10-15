@@ -37,6 +37,8 @@ class ClubRoleController extends Controller
     {
         ClubRole::create($request->validated());
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+
         return back();
     }
 
@@ -50,6 +52,8 @@ class ClubRoleController extends Controller
             $audit->execute('club_role', $role->id, 'updated', $before, $role->only(['name', 'sort_order', 'active', 'access_group_id']), $request->user()->id);
             $accessAdmin->execute($hadAccessAdministrator);
         });
+
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }

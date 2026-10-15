@@ -5,9 +5,17 @@ if (-not (Test-Path .env)) {
     Copy-Item .env.example .env
 }
 
+Write-Host "Verifying persistent host data directories..."
+$dirs = @("data/storage/public", "data/storage/receipts", "data/storage/private", "data/redis")
+foreach ($dir in $dirs) {
+    if (-not (Test-Path $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+}
+
 Write-Host "Building and starting containers..."
 docker compose build app
-docker compose up -d db
+docker compose up -d db redis
 
 Write-Host "Installing PHP dependencies..."
 docker compose run --rm app composer install --no-scripts
@@ -19,7 +27,7 @@ Write-Host "Running migrations and seeders..."
 docker compose run --rm app php artisan migrate --seed
 
 Write-Host "Creating storage symlink..."
-docker compose run --rm app php artisan storage:link
+docker compose run --rm app php artisan storage:link --force
 
 Write-Host "Creating test database if not exists..."
 try {
@@ -35,8 +43,8 @@ Write-Host "Installing frontend dependencies & building assets..."
 docker compose run --rm node npm install
 docker compose run --rm node npm run build
 
-Write-Host "Starting application and nginx..."
-docker compose up -d app nginx
+Write-Host "Starting application, redis and nginx..."
+docker compose up -d app nginx redis
 
 Write-Host ""
 Write-Host "Ready: http://localhost:8000 (app) or http://localhost:8080 (nginx)"

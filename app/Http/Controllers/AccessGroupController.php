@@ -42,6 +42,8 @@ class AccessGroupController extends Controller
             $audit->execute('access_group', $group->id, 'created', null, $this->snapshot($group), $request->user()->id);
         });
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+
         return back();
     }
 
@@ -59,6 +61,8 @@ class AccessGroupController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+
         return back();
     }
 
@@ -74,6 +78,8 @@ class AccessGroupController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+
         return back();
     }
 
@@ -88,6 +94,8 @@ class AccessGroupController extends Controller
             $audit->execute('club_role', $role->id, 'access_group_changed', $before, ['access_group_id' => $role->access_group_id], $request->user()->id);
             $accessAdmin->execute($hadAccessAdministrator);
         });
+
+        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }
