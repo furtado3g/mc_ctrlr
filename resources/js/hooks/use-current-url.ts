@@ -3,18 +3,18 @@ import { usePage } from '@inertiajs/react';
 import { toUrl } from '@/lib/utils';
 
 export type IsCurrentUrlFn = (
-    urlToCheck: NonNullable<InertiaLinkProps['href']>,
+    urlToCheck?: InertiaLinkProps['href'] | string | null,
     currentUrl?: string,
     startsWith?: boolean,
 ) => boolean;
 
 export type IsCurrentOrParentUrlFn = (
-    urlToCheck: NonNullable<InertiaLinkProps['href']>,
+    urlToCheck?: InertiaLinkProps['href'] | string | null,
     currentUrl?: string,
 ) => boolean;
 
 export type WhenCurrentUrlFn = <TIfTrue, TIfFalse = null>(
-    urlToCheck: NonNullable<InertiaLinkProps['href']>,
+    urlToCheck: InertiaLinkProps['href'] | string | null | undefined,
     ifTrue: TIfTrue,
     ifFalse?: TIfFalse,
 ) => TIfTrue | TIfFalse;
@@ -36,12 +36,16 @@ export function useCurrentUrl(): UseCurrentUrlReturn {
     ).pathname;
 
     const isCurrentUrl: IsCurrentUrlFn = (
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck?: InertiaLinkProps['href'] | string | null,
         currentUrl?: string,
         startsWith: boolean = false,
     ) => {
         const urlToCompare = currentUrl ?? currentUrlPath;
         const urlString = toUrl(urlToCheck);
+
+        if (!urlString) {
+            return false;
+        }
 
         const comparePath = (path: string): boolean =>
             startsWith ? urlToCompare.startsWith(path) : path === urlToCompare;
@@ -60,14 +64,14 @@ export function useCurrentUrl(): UseCurrentUrlReturn {
     };
 
     const isCurrentOrParentUrl: IsCurrentOrParentUrlFn = (
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck?: InertiaLinkProps['href'] | string | null,
         currentUrl?: string,
     ) => {
         return isCurrentUrl(urlToCheck, currentUrl, true);
     };
 
     const whenCurrentUrl: WhenCurrentUrlFn = <TIfTrue, TIfFalse = null>(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck: InertiaLinkProps['href'] | string | null | undefined,
         ifTrue: TIfTrue,
         ifFalse: TIfFalse = null as TIfFalse,
     ): TIfTrue | TIfFalse => {

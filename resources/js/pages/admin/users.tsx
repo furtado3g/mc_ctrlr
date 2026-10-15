@@ -501,7 +501,12 @@ function UserPermissionsModal({
 }) {
     const [open, setOpen] = useState(false);
 
-    const form = useForm({
+    const form = useForm<{
+        active: boolean;
+        is_global: boolean;
+        regional_id: number | '';
+        permissions: string[];
+    }>({
         active: user.active,
         is_global: Boolean(user.is_global),
         regional_id: user.regional_id ?? (availableRegionals[0]?.id ?? ''),
@@ -576,7 +581,8 @@ function UserPermissionsModal({
                                 const [area, action] = p.split('.');
                                 return { area, action };
                             }),
-                        })).patch(`/admin/users/${user.id}/permissions`, {
+                        }));
+                        form.patch(`/admin/users/${user.id}/permissions`, {
                             onSuccess: () => {
                                 form.setDefaults();
                                 setOpen(false);
