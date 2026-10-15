@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminUserController::index
-* @see app/Http/Controllers/AdminUserController.php:13
+* @see app/Http/Controllers/AdminUserController.php:21
 * @route '/admin/users'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\AdminUserController::store
-* @see app/Http/Controllers/AdminUserController.php:21
+* @see app/Http/Controllers/AdminUserController.php:46
 * @route '/admin/users'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -97,7 +97,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminUserController::store
-* @see app/Http/Controllers/AdminUserController.php:21
+* @see app/Http/Controllers/AdminUserController.php:46
 * @route '/admin/users'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\AdminUserController::store
-* @see app/Http/Controllers/AdminUserController.php:21
+* @see app/Http/Controllers/AdminUserController.php:46
 * @route '/admin/users'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -116,7 +116,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\AdminUserController::store
-* @see app/Http/Controllers/AdminUserController.php:21
+* @see app/Http/Controllers/AdminUserController.php:46
 * @route '/admin/users'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -126,7 +126,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \App\Http\Controllers\AdminUserController::store
-* @see app/Http/Controllers/AdminUserController.php:21
+* @see app/Http/Controllers/AdminUserController.php:46
 * @route '/admin/users'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -138,7 +138,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\AdminUserController::permissions
-* @see app/Http/Controllers/AdminUserController.php:33
+* @see app/Http/Controllers/AdminUserController.php:88
 * @route '/admin/users/{user}/permissions'
 */
 export const permissions = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -153,7 +153,7 @@ permissions.definition = {
 
 /**
 * @see \App\Http\Controllers\AdminUserController::permissions
-* @see app/Http/Controllers/AdminUserController.php:33
+* @see app/Http/Controllers/AdminUserController.php:88
 * @route '/admin/users/{user}/permissions'
 */
 permissions.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -186,7 +186,7 @@ permissions.url = (args: { user: number | { id: number } } | [user: number | { i
 
 /**
 * @see \App\Http\Controllers\AdminUserController::permissions
-* @see app/Http/Controllers/AdminUserController.php:33
+* @see app/Http/Controllers/AdminUserController.php:88
 * @route '/admin/users/{user}/permissions'
 */
 permissions.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -196,7 +196,7 @@ permissions.patch = (args: { user: number | { id: number } } | [user: number | {
 
 /**
 * @see \App\Http\Controllers\AdminUserController::permissions
-* @see app/Http/Controllers/AdminUserController.php:33
+* @see app/Http/Controllers/AdminUserController.php:88
 * @route '/admin/users/{user}/permissions'
 */
 const permissionsForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -211,7 +211,7 @@ const permissionsForm = (args: { user: number | { id: number } } | [user: number
 
 /**
 * @see \App\Http\Controllers\AdminUserController::permissions
-* @see app/Http/Controllers/AdminUserController.php:33
+* @see app/Http/Controllers/AdminUserController.php:88
 * @route '/admin/users/{user}/permissions'
 */
 permissionsForm.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

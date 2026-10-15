@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import {
     ArrowUpRight,
     Camera,
@@ -200,11 +200,15 @@ export default function InstitutionalPageEditor({
 
     const save = (event: React.FormEvent) => {
         event.preventDefault();
-        form.patch('/institutional-page/draft', { forceFormData: true });
+        form.transform((data) => ({
+            ...data,
+            _method: 'patch',
+        }));
+        form.post('/institutional-page/draft', { forceFormData: true });
     };
 
     const publish = () => {
-        form.post('/institutional-page/publish');
+        router.post('/institutional-page/publish');
     };
 
     const effectiveLogoUrl = form.data.remove_logo

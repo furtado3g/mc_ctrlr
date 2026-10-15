@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PaymentController::store
-* @see app/Http/Controllers/PaymentController.php:14
+* @see app/Http/Controllers/PaymentController.php:15
 * @route '/fees/{fee}/payments'
 */
 export const store = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::store
-* @see app/Http/Controllers/PaymentController.php:14
+* @see app/Http/Controllers/PaymentController.php:15
 * @route '/fees/{fee}/payments'
 */
 store.url = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { fee: number | { id: number } } | [fee: number | { id: numbe
 
 /**
 * @see \App\Http\Controllers\PaymentController::store
-* @see app/Http/Controllers/PaymentController.php:14
+* @see app/Http/Controllers/PaymentController.php:15
 * @route '/fees/{fee}/payments'
 */
 store.post = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { fee: number | { id: number } } | [fee: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\PaymentController::store
-* @see app/Http/Controllers/PaymentController.php:14
+* @see app/Http/Controllers/PaymentController.php:15
 * @route '/fees/{fee}/payments'
 */
 const storeForm = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { fee: number | { id: number } } | [fee: number | { id:
 
 /**
 * @see \App\Http\Controllers\PaymentController::store
-* @see app/Http/Controllers/PaymentController.php:14
+* @see app/Http/Controllers/PaymentController.php:15
 * @route '/fees/{fee}/payments'
 */
 storeForm.post = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\PaymentController::reverse
-* @see app/Http/Controllers/PaymentController.php:26
+* @see app/Http/Controllers/PaymentController.php:28
 * @route '/payments/{payment}/reverse'
 */
 export const reverse = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -96,7 +96,7 @@ reverse.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::reverse
-* @see app/Http/Controllers/PaymentController.php:26
+* @see app/Http/Controllers/PaymentController.php:28
 * @route '/payments/{payment}/reverse'
 */
 reverse.url = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -129,7 +129,7 @@ reverse.url = (args: { payment: number | { id: number } } | [payment: number | {
 
 /**
 * @see \App\Http\Controllers\PaymentController::reverse
-* @see app/Http/Controllers/PaymentController.php:26
+* @see app/Http/Controllers/PaymentController.php:28
 * @route '/payments/{payment}/reverse'
 */
 reverse.post = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -139,7 +139,7 @@ reverse.post = (args: { payment: number | { id: number } } | [payment: number | 
 
 /**
 * @see \App\Http\Controllers\PaymentController::reverse
-* @see app/Http/Controllers/PaymentController.php:26
+* @see app/Http/Controllers/PaymentController.php:28
 * @route '/payments/{payment}/reverse'
 */
 const reverseForm = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -149,7 +149,7 @@ const reverseForm = (args: { payment: number | { id: number } } | [payment: numb
 
 /**
 * @see \App\Http\Controllers\PaymentController::reverse
-* @see app/Http/Controllers/PaymentController.php:26
+* @see app/Http/Controllers/PaymentController.php:28
 * @route '/payments/{payment}/reverse'
 */
 reverseForm.post = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

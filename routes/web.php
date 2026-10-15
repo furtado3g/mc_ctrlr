@@ -37,7 +37,7 @@ Route::get('/', InstitutionalLandingController::class)->name('home');
 
 Route::middleware(['auth', 'verified', EnsureActiveUser::class])->group(function () {
     Route::get('/institutional-page', [InstitutionalPageAdminController::class, 'index']);
-    Route::patch('/institutional-page/draft', [InstitutionalPageAdminController::class, 'save']);
+    Route::match(['patch', 'post'], '/institutional-page/draft', [InstitutionalPageAdminController::class, 'save']);
     Route::post('/institutional-page/publish', [InstitutionalPageAdminController::class, 'publish']);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');

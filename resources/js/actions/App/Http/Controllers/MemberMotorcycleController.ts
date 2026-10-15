@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::store
-* @see app/Http/Controllers/MemberMotorcycleController.php:14
+* @see app/Http/Controllers/MemberMotorcycleController.php:13
 * @route '/members/{member}/motorcycles'
 */
 export const store = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::store
-* @see app/Http/Controllers/MemberMotorcycleController.php:14
+* @see app/Http/Controllers/MemberMotorcycleController.php:13
 * @route '/members/{member}/motorcycles'
 */
 store.url = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { member: number | { id: number } } | [member: number | { id:
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::store
-* @see app/Http/Controllers/MemberMotorcycleController.php:14
+* @see app/Http/Controllers/MemberMotorcycleController.php:13
 * @route '/members/{member}/motorcycles'
 */
 store.post = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { member: number | { id: number } } | [member: number | { id
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::store
-* @see app/Http/Controllers/MemberMotorcycleController.php:14
+* @see app/Http/Controllers/MemberMotorcycleController.php:13
 * @route '/members/{member}/motorcycles'
 */
 const storeForm = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { member: number | { id: number } } | [member: number |
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::store
-* @see app/Http/Controllers/MemberMotorcycleController.php:14
+* @see app/Http/Controllers/MemberMotorcycleController.php:13
 * @route '/members/{member}/motorcycles'
 */
 storeForm.post = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::update
-* @see app/Http/Controllers/MemberMotorcycleController.php:37
+* @see app/Http/Controllers/MemberMotorcycleController.php:20
 * @route '/member-motorcycles/{link}'
 */
 export const update = (args: { link: number | { id: number } } | [link: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -96,7 +96,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::update
-* @see app/Http/Controllers/MemberMotorcycleController.php:37
+* @see app/Http/Controllers/MemberMotorcycleController.php:20
 * @route '/member-motorcycles/{link}'
 */
 update.url = (args: { link: number | { id: number } } | [link: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -129,7 +129,7 @@ update.url = (args: { link: number | { id: number } } | [link: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::update
-* @see app/Http/Controllers/MemberMotorcycleController.php:37
+* @see app/Http/Controllers/MemberMotorcycleController.php:20
 * @route '/member-motorcycles/{link}'
 */
 update.patch = (args: { link: number | { id: number } } | [link: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -139,7 +139,7 @@ update.patch = (args: { link: number | { id: number } } | [link: number | { id: 
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::update
-* @see app/Http/Controllers/MemberMotorcycleController.php:37
+* @see app/Http/Controllers/MemberMotorcycleController.php:20
 * @route '/member-motorcycles/{link}'
 */
 const updateForm = (args: { link: number | { id: number } } | [link: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -154,7 +154,7 @@ const updateForm = (args: { link: number | { id: number } } | [link: number | { 
 
 /**
 * @see \App\Http\Controllers\MemberMotorcycleController::update
-* @see app/Http/Controllers/MemberMotorcycleController.php:37
+* @see app/Http/Controllers/MemberMotorcycleController.php:20
 * @route '/member-motorcycles/{link}'
 */
 updateForm.patch = (args: { link: number | { id: number } } | [link: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

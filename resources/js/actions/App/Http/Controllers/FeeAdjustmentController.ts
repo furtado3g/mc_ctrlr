@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\FeeAdjustmentController::store
-* @see app/Http/Controllers/FeeAdjustmentController.php:12
+* @see app/Http/Controllers/FeeAdjustmentController.php:13
 * @route '/fees/{fee}/adjustments'
 */
 export const store = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\FeeAdjustmentController::store
-* @see app/Http/Controllers/FeeAdjustmentController.php:12
+* @see app/Http/Controllers/FeeAdjustmentController.php:13
 * @route '/fees/{fee}/adjustments'
 */
 store.url = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { fee: number | { id: number } } | [fee: number | { id: numbe
 
 /**
 * @see \App\Http\Controllers\FeeAdjustmentController::store
-* @see app/Http/Controllers/FeeAdjustmentController.php:12
+* @see app/Http/Controllers/FeeAdjustmentController.php:13
 * @route '/fees/{fee}/adjustments'
 */
 store.post = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { fee: number | { id: number } } | [fee: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\FeeAdjustmentController::store
-* @see app/Http/Controllers/FeeAdjustmentController.php:12
+* @see app/Http/Controllers/FeeAdjustmentController.php:13
 * @route '/fees/{fee}/adjustments'
 */
 const storeForm = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { fee: number | { id: number } } | [fee: number | { id:
 
 /**
 * @see \App\Http\Controllers\FeeAdjustmentController::store
-* @see app/Http/Controllers/FeeAdjustmentController.php:12
+* @see app/Http/Controllers/FeeAdjustmentController.php:13
 * @route '/fees/{fee}/adjustments'
 */
 storeForm.post = (args: { fee: number | { id: number } } | [fee: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

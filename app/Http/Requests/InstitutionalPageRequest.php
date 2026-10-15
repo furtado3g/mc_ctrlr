@@ -38,6 +38,40 @@ class InstitutionalPageRequest extends FormRequest
         ];
     }
 
+    /** @return array<string, string> */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'O nome institucional do motoclube é obrigatório.',
+            'name.not_regex' => 'O nome institucional não pode conter apenas espaços.',
+            'sections.required' => 'As seções da página são obrigatórias.',
+            'sections.array' => 'O formato das seções é inválido.',
+            'sections.max' => 'A página pode ter no máximo 5 seções.',
+            'sections.*.image.uploaded' => 'A foto da seção falhou ao ser enviada. Verifique se o arquivo não excede 5MB.',
+            'sections.*.image.max' => 'A foto da seção deve ter no máximo 5MB.',
+            'sections.*.image.mimes' => 'A foto da seção deve ser uma imagem nos formatos PNG, JPG, JPEG ou WEBP.',
+            'sections.*.image.image' => 'O arquivo enviado para a seção deve ser uma imagem válida.',
+            'logo.uploaded' => 'O logotipo falhou ao ser enviado. Verifique se o arquivo não excede 5MB.',
+            'logo.max' => 'O logotipo deve ter no máximo 5MB.',
+            'logo.mimes' => 'O logotipo deve ser uma imagem nos formatos PNG, JPG, JPEG ou WEBP.',
+            'logo.image' => 'O arquivo enviado para o logotipo deve ser uma imagem válida.',
+        ];
+    }
+
+    /** @return array<string, string> */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nome institucional',
+            'sections' => 'seções',
+            'sections.*.title' => 'título da seção',
+            'sections.*.body' => 'texto da seção',
+            'sections.*.image' => 'foto da seção',
+            'sections.*.enabled' => 'exibir seção',
+            'sections.*.position' => 'ordem da seção',
+        ];
+    }
+
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {

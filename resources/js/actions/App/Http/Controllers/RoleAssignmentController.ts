@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::store
-* @see app/Http/Controllers/RoleAssignmentController.php:12
+* @see app/Http/Controllers/RoleAssignmentController.php:16
 * @route '/members/{member}/role-assignments'
 */
 export const store = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::store
-* @see app/Http/Controllers/RoleAssignmentController.php:12
+* @see app/Http/Controllers/RoleAssignmentController.php:16
 * @route '/members/{member}/role-assignments'
 */
 store.url = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { member: number | { id: number } } | [member: number | { id:
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::store
-* @see app/Http/Controllers/RoleAssignmentController.php:12
+* @see app/Http/Controllers/RoleAssignmentController.php:16
 * @route '/members/{member}/role-assignments'
 */
 store.post = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { member: number | { id: number } } | [member: number | { id
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::store
-* @see app/Http/Controllers/RoleAssignmentController.php:12
+* @see app/Http/Controllers/RoleAssignmentController.php:16
 * @route '/members/{member}/role-assignments'
 */
 const storeForm = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { member: number | { id: number } } | [member: number |
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::store
-* @see app/Http/Controllers/RoleAssignmentController.php:12
+* @see app/Http/Controllers/RoleAssignmentController.php:16
 * @route '/members/{member}/role-assignments'
 */
 storeForm.post = (args: { member: number | { id: number } } | [member: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::update
-* @see app/Http/Controllers/RoleAssignmentController.php:20
+* @see app/Http/Controllers/RoleAssignmentController.php:30
 * @route '/role-assignments/{assignment}'
 */
 export const update = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -96,7 +96,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::update
-* @see app/Http/Controllers/RoleAssignmentController.php:20
+* @see app/Http/Controllers/RoleAssignmentController.php:30
 * @route '/role-assignments/{assignment}'
 */
 update.url = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -129,7 +129,7 @@ update.url = (args: { assignment: number | { id: number } } | [assignment: numbe
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::update
-* @see app/Http/Controllers/RoleAssignmentController.php:20
+* @see app/Http/Controllers/RoleAssignmentController.php:30
 * @route '/role-assignments/{assignment}'
 */
 update.patch = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -139,7 +139,7 @@ update.patch = (args: { assignment: number | { id: number } } | [assignment: num
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::update
-* @see app/Http/Controllers/RoleAssignmentController.php:20
+* @see app/Http/Controllers/RoleAssignmentController.php:30
 * @route '/role-assignments/{assignment}'
 */
 const updateForm = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -154,7 +154,7 @@ const updateForm = (args: { assignment: number | { id: number } } | [assignment:
 
 /**
 * @see \App\Http\Controllers\RoleAssignmentController::update
-* @see app/Http/Controllers/RoleAssignmentController.php:20
+* @see app/Http/Controllers/RoleAssignmentController.php:30
 * @route '/role-assignments/{assignment}'
 */
 updateForm.patch = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ReceiptController::store
-* @see app/Http/Controllers/ReceiptController.php:13
+* @see app/Http/Controllers/ReceiptController.php:16
 * @route '/cash/movements/{movement}/receipt'
 */
 export const store = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\ReceiptController::store
-* @see app/Http/Controllers/ReceiptController.php:13
+* @see app/Http/Controllers/ReceiptController.php:16
 * @route '/cash/movements/{movement}/receipt'
 */
 store.url = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { movement: number | { id: number } } | [movement: number | {
 
 /**
 * @see \App\Http\Controllers\ReceiptController::store
-* @see app/Http/Controllers/ReceiptController.php:13
+* @see app/Http/Controllers/ReceiptController.php:16
 * @route '/cash/movements/{movement}/receipt'
 */
 store.post = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { movement: number | { id: number } } | [movement: number | 
 
 /**
 * @see \App\Http\Controllers\ReceiptController::store
-* @see app/Http/Controllers/ReceiptController.php:13
+* @see app/Http/Controllers/ReceiptController.php:16
 * @route '/cash/movements/{movement}/receipt'
 */
 const storeForm = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { movement: number | { id: number } } | [movement: numb
 
 /**
 * @see \App\Http\Controllers\ReceiptController::store
-* @see app/Http/Controllers/ReceiptController.php:13
+* @see app/Http/Controllers/ReceiptController.php:16
 * @route '/cash/movements/{movement}/receipt'
 */
 storeForm.post = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -81,7 +81,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 export const show = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -96,7 +96,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 show.url = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -129,7 +129,7 @@ show.url = (args: { movement: number | { id: number } } | [movement: number | { 
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 show.get = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -139,7 +139,7 @@ show.get = (args: { movement: number | { id: number } } | [movement: number | { 
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 show.head = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -149,7 +149,7 @@ show.head = (args: { movement: number | { id: number } } | [movement: number | {
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 const showForm = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -159,7 +159,7 @@ const showForm = (args: { movement: number | { id: number } } | [movement: numbe
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 showForm.get = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -169,7 +169,7 @@ showForm.get = (args: { movement: number | { id: number } } | [movement: number 
 
 /**
 * @see \App\Http\Controllers\ReceiptController::show
-* @see app/Http/Controllers/ReceiptController.php:27
+* @see app/Http/Controllers/ReceiptController.php:34
 * @route '/cash/movements/{movement}/receipt'
 */
 showForm.head = (args: { movement: number | { id: number } } | [movement: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

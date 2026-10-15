@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\FeeGenerationController::store
-* @see app/Http/Controllers/FeeGenerationController.php:12
+* @see app/Http/Controllers/FeeGenerationController.php:13
 * @route '/billing-periods/{period}/generate'
 */
 export const store = (args: { period: number | { id: number } } | [period: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\FeeGenerationController::store
-* @see app/Http/Controllers/FeeGenerationController.php:12
+* @see app/Http/Controllers/FeeGenerationController.php:13
 * @route '/billing-periods/{period}/generate'
 */
 store.url = (args: { period: number | { id: number } } | [period: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ store.url = (args: { period: number | { id: number } } | [period: number | { id:
 
 /**
 * @see \App\Http\Controllers\FeeGenerationController::store
-* @see app/Http/Controllers/FeeGenerationController.php:12
+* @see app/Http/Controllers/FeeGenerationController.php:13
 * @route '/billing-periods/{period}/generate'
 */
 store.post = (args: { period: number | { id: number } } | [period: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -59,7 +59,7 @@ store.post = (args: { period: number | { id: number } } | [period: number | { id
 
 /**
 * @see \App\Http\Controllers\FeeGenerationController::store
-* @see app/Http/Controllers/FeeGenerationController.php:12
+* @see app/Http/Controllers/FeeGenerationController.php:13
 * @route '/billing-periods/{period}/generate'
 */
 const storeForm = (args: { period: number | { id: number } } | [period: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ const storeForm = (args: { period: number | { id: number } } | [period: number |
 
 /**
 * @see \App\Http\Controllers\FeeGenerationController::store
-* @see app/Http/Controllers/FeeGenerationController.php:12
+* @see app/Http/Controllers/FeeGenerationController.php:13
 * @route '/billing-periods/{period}/generate'
 */
 storeForm.post = (args: { period: number | { id: number } } | [period: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
