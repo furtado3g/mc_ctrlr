@@ -19,6 +19,9 @@ docker compose run --rm app php artisan key:generate
 echo "Running migrations and seeders..."
 docker compose run --rm app php artisan migrate --seed
 
+echo "Creating storage symlink..."
+docker compose run --rm app php artisan storage:link
+
 echo "Creating test database if not exists..."
 docker compose exec -T db createdb -U mc_ctrlr mc_ctrlr_test 2>/dev/null || true
 
