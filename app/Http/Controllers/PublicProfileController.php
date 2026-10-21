@@ -102,7 +102,7 @@ class PublicProfileController extends Controller
             'bio' => $targetUser?->bio,
             'regional' => $member->regional?->name,
             'city' => trim("{$member->city} / {$member->state}", ' /'),
-            'joined_at_human' => $member->joined_at ? 'Membro desde ' . $member->joined_at->translatedFormat('F \d\e Y') : null,
+            'joined_at_human' => $member->joined_at ? 'Membro desde '.$member->joined_at->translatedFormat('F \d\e Y') : null,
             'motorcycles' => $member->motorcycleLinks->filter(fn ($l) => $l->ended_at === null)->map(fn ($l) => [
                 'manufacturer' => $l->motorcycle?->manufacturer,
                 'model' => $l->motorcycle?->model,

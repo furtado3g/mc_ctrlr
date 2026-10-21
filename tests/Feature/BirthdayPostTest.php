@@ -97,10 +97,10 @@ class BirthdayPostTest extends TestCase
         ]);
 
         $today = Carbon::today();
-        $prefix = 'FilterTest_' . uniqid();
+        $prefix = 'FilterTest_'.uniqid();
 
         $mToday = Member::create([
-            'name' => $prefix . ' Hoje',
+            'name' => $prefix.' Hoje',
             'status' => 'active',
             'joined_at' => now(),
             'birth_date' => $today->copy()->subYears(30)->format('Y-m-d'),
@@ -109,7 +109,7 @@ class BirthdayPostTest extends TestCase
 
         // Member whose birthday is in 3 days (within this week)
         $mWeek = Member::create([
-            'name' => $prefix . ' Semana',
+            'name' => $prefix.' Semana',
             'status' => 'active',
             'joined_at' => now(),
             'birth_date' => $today->copy()->addDays(3)->subYears(40)->format('Y-m-d'),
@@ -118,7 +118,7 @@ class BirthdayPostTest extends TestCase
 
         // Member whose birthday is in 25 days
         $mFar = Member::create([
-            'name' => $prefix . ' Longe',
+            'name' => $prefix.' Longe',
             'status' => 'active',
             'joined_at' => now(),
             'birth_date' => $today->copy()->addMonths(3)->subYears(28)->format('Y-m-d'),
@@ -148,10 +148,10 @@ class BirthdayPostTest extends TestCase
             'active' => true,
             'regional_id' => $regional->id,
         ]);
-        $uniqueNick = 'Relampago' . rand(100, 999);
+        $uniqueNick = 'Relampago'.rand(100, 999);
 
         $member = Member::create([
-            'name' => 'Alexandre Rocha ' . $uniqueNick,
+            'name' => 'Alexandre Rocha '.$uniqueNick,
             'status' => 'active',
             'joined_at' => now(),
             'birth_date' => '1990-08-20',
@@ -159,7 +159,7 @@ class BirthdayPostTest extends TestCase
         ]);
 
         $mUser = User::factory()->create([
-            'name' => 'Alexandre Rocha ' . $uniqueNick,
+            'name' => 'Alexandre Rocha '.$uniqueNick,
             'member_id' => $member->id,
         ]);
 
@@ -172,7 +172,7 @@ class BirthdayPostTest extends TestCase
         $response->assertOk()
             ->assertJsonCount(1)
             ->assertJsonPath('0.id', $member->id)
-            ->assertJsonPath('0.name', 'Alexandre Rocha ' . $uniqueNick)
+            ->assertJsonPath('0.name', 'Alexandre Rocha '.$uniqueNick)
             ->assertJsonPath('0.road_nickname', $uniqueNick);
     }
 }

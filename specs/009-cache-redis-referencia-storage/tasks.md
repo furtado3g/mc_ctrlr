@@ -89,12 +89,12 @@
 
 ### Tests for User Story 3
 
-- [ ] T024 [P] [US3] Create automated feature tests for diagnostic health commands and JSON output in `tests/Feature/InfraHealthCommandsTest.php`
+- [x] T024 [P] [US3] Create automated feature tests for diagnostic health commands and JSON output in `tests/Feature/InfraHealthCommandsTest.php`
 
 ### Implementation for User Story 3
 
-- [ ] T025 [US3] Implement `app:cache-health` Artisan command with ping, latency benchmark, write/read/TTL test, and fallback check in `app/Console/Commands/CacheHealthCommand.php`
-- [ ] T026 [US3] Implement `app:storage-health` Artisan command with directory permissions verification and symlink validation in `app/Console/Commands/StorageHealthCommand.php`
+- [x] T025 [US3] Implement `app:cache-health` Artisan command with ping, latency benchmark, write/read/TTL test, and fallback check in `app/Console/Commands/CacheHealthCommand.php`
+- [x] T026 [US3] Implement `app:storage-health` Artisan command with directory permissions verification and symlink validation in `app/Console/Commands/StorageHealthCommand.php`
 
 **Checkpoint**: Todas as User Stories integradas e operacionais.
 

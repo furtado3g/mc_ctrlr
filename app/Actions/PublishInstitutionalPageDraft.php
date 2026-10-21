@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\InstitutionalPage;
+use App\Services\Cache\AppCacheManagerInterface;
 use App\Support\InstitutionalPageAssets;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,7 @@ class PublishInstitutionalPageDraft
             Storage::disk('public')->delete($path);
         }
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateLanding();
+        app(AppCacheManagerInterface::class)->invalidateLanding();
 
         return $published;
     }

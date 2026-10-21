@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Member;
 use App\Models\PermissionGrant;
+use App\Models\Regional;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class DynamicTablesTest extends TestCase
         $user = User::factory()->create();
         PermissionGrant::create(['user_id' => $user->id, 'area' => 'cadastros', 'action' => 'view', 'granted_by' => $user->id, 'granted_at' => now()]);
         $now = now();
-        $regionalId = \App\Models\Regional::first()?->id ?? 1;
+        $regionalId = Regional::first()?->id ?? 1;
         foreach (array_chunk(array_map(fn (int $id) => ['name' => sprintf('Alpha Member %05d', $id), 'joined_at' => today()->toDateString(), 'status' => 'active', 'regional_id' => $regionalId, 'created_at' => $now, 'updated_at' => $now], range(1, 10000)), 500) as $chunk) {
             DB::table('members')->insert($chunk);
         }

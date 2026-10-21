@@ -29,18 +29,18 @@ class CacheHealthCommand extends Command
         $health = $cacheManager->checkHealth();
 
         $outputData = [
-            'status' => $health['status'] ?? 'error',
-            'driver' => $health['driver'] ?? 'failover',
-            'connected' => (bool) ($health['connected'] ?? false),
-            'latency_ms' => (float) ($health['latency_ms'] ?? 0.0),
-            'write_read_test' => $health['write_read_test'] ?? 'failed',
-            'ttl_test' => $health['ttl_test'] ?? 'failed',
-            'fallback_store' => $health['fallback_store'] ?? 'database',
-            'timestamp' => $health['timestamp'] ?? now()->toIso8601ZuluString(),
+            'status' => $health['status'],
+            'driver' => $health['driver'],
+            'connected' => $health['connected'],
+            'latency_ms' => $health['latency_ms'],
+            'write_read_test' => $health['write_read_test'],
+            'ttl_test' => $health['ttl_test'],
+            'fallback_store' => $health['fallback_store'],
+            'timestamp' => $health['timestamp'],
         ];
 
         if ($this->option('json')) {
-            $this->output->writeln(json_encode($outputData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            $this->line((string) json_encode($outputData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         } else {
             $this->info('--- Cache Health Status ---');
             $this->table(
@@ -49,11 +49,11 @@ class CacheHealthCommand extends Command
                     ['Status Geral', strtoupper($outputData['status'])],
                     ['Driver Principal', $outputData['driver']],
                     ['Conectado', $outputData['connected'] ? 'Sim' : 'Não'],
-                    ['Latência (ms)', $outputData['latency_ms'] . ' ms'],
+                    ['Latência (ms)', $outputData['latency_ms'].' ms'],
                     ['Teste Leitura/Escrita', $outputData['write_read_test']],
                     ['Teste de TTL', $outputData['ttl_test']],
                     ['Fallback Store', $outputData['fallback_store']],
-                    ['Detalhes', $health['details'] ?? ''],
+                    ['Detalhes', $health['details']],
                     ['Timestamp', $outputData['timestamp']],
                 ]
             );

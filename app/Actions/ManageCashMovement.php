@@ -4,6 +4,8 @@ namespace App\Actions;
 
 use App\Models\CashCorrection;
 use App\Models\CashMovement;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -13,7 +15,7 @@ class ManageCashMovement
     public function create(array $data, int $userId): CashMovement
     {
         return DB::transaction(function () use ($data, $userId) {
-            $user = \App\Models\User::find($userId) ?? \Illuminate\Support\Facades\Auth::user();
+            $user = User::find($userId) ?? Auth::user();
             if (! isset($data['regional_id']) && $user) {
                 if (! $user->is_global && $user->regional_id !== null) {
                     $data['regional_id'] = $user->regional_id;

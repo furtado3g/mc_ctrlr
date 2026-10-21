@@ -7,6 +7,7 @@ use App\Actions\RecordAuditEvent;
 use App\Http\Requests\RoleAssignmentRequest;
 use App\Models\Member;
 use App\Models\RoleAssignment;
+use App\Services\Cache\AppCacheManagerInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -24,7 +25,7 @@ class RoleAssignmentController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions($member->user?->id);
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions($member->user?->id);
 
         return back();
     }
@@ -41,7 +42,7 @@ class RoleAssignmentController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions($assignment->member?->user?->id);
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions($assignment->member?->user?->id);
 
         return back();
     }

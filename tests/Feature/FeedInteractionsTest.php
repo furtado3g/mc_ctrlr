@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use App\Models\PostComment;
-use App\Models\PostLike;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

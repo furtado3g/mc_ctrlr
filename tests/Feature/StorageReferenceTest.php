@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -12,7 +11,7 @@ class StorageReferenceTest extends TestCase
     public function test_public_disk_resolves_to_storage_app_public(): void
     {
         $publicPath = Storage::disk('public')->path('');
-        $expectedSubpath = 'storage' . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'public';
+        $expectedSubpath = 'storage'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'public';
 
         $this->assertStringContainsString($expectedSubpath, $publicPath);
     }
@@ -20,7 +19,7 @@ class StorageReferenceTest extends TestCase
     public function test_local_disk_resolves_to_storage_app(): void
     {
         $localPath = Storage::disk('local')->path('');
-        $expectedSubpath = 'storage' . DIRECTORY_SEPARATOR . 'app';
+        $expectedSubpath = 'storage'.DIRECTORY_SEPARATOR.'app';
 
         $this->assertStringContainsString($expectedSubpath, $localPath);
     }
@@ -45,7 +44,7 @@ class StorageReferenceTest extends TestCase
 
     public function test_file_upload_to_public_disk_persists_in_storage_path(): void
     {
-        $filename = 'test_sample_' . uniqid() . '.txt';
+        $filename = 'test_sample_'.uniqid().'.txt';
         $content = 'Sample content for storage persistence test';
 
         $uploaded = Storage::disk('public')->put($filename, $content);
@@ -68,13 +67,13 @@ class StorageReferenceTest extends TestCase
             File::makeDirectory($receiptsDir, 0755, true);
         }
 
-        $testReceipt = 'receipt_test_' . uniqid() . '.pdf';
-        $written = File::put($receiptsDir . '/' . $testReceipt, '%PDF-1.4 test receipt');
+        $testReceipt = 'receipt_test_'.uniqid().'.pdf';
+        $written = File::put($receiptsDir.'/'.$testReceipt, '%PDF-1.4 test receipt');
 
         $this->assertNotFalse($written);
-        $this->assertFileExists($receiptsDir . '/' . $testReceipt);
+        $this->assertFileExists($receiptsDir.'/'.$testReceipt);
 
         // Cleanup
-        File::delete($receiptsDir . '/' . $testReceipt);
+        File::delete($receiptsDir.'/'.$testReceipt);
     }
 }

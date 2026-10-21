@@ -4,11 +4,12 @@ namespace App\Traits;
 
 use App\Models\Regional;
 use App\Scopes\RegionalScope;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 trait BelongsToRegional
 {
@@ -31,6 +32,7 @@ trait BelongsToRegional
                 if ($firstRegional) {
                     $model->regional_id = $firstRegional->id;
                 }
+
                 return;
             }
 
@@ -47,7 +49,7 @@ trait BelongsToRegional
      *
      * @param  mixed  $value
      * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function resolveRouteBinding($value, $field = null)
     {

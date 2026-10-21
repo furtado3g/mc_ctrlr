@@ -23,14 +23,14 @@ class RegionalScope implements Scope
         if ($user->is_global) {
             $activeRegionalId = session('active_regional_id');
             if ($activeRegionalId !== null) {
-                $builder->where($model->getTable() . '.regional_id', $activeRegionalId);
+                $builder->where($model->getTable().'.regional_id', $activeRegionalId);
             }
 
             return;
         }
 
         if ($user->regional_id !== null) {
-            $builder->where($model->getTable() . '.regional_id', $user->regional_id);
+            $builder->where($model->getTable().'.regional_id', $user->regional_id);
         } else {
             // User without regional and not global cannot access tenant data
             $builder->whereRaw('1 = 0');

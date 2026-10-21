@@ -6,6 +6,7 @@ use App\Actions\AssertAccessAdministratorRemains;
 use App\Actions\RecordAuditEvent;
 use App\Http\Requests\ClubRoleRequest;
 use App\Models\ClubRole;
+use App\Services\Cache\AppCacheManagerInterface;
 use App\Support\SessionTableQuery;
 use App\Support\TableQueryRules;
 use Illuminate\Http\RedirectResponse;
@@ -37,7 +38,7 @@ class ClubRoleController extends Controller
     {
         ClubRole::create($request->validated());
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }
@@ -53,7 +54,7 @@ class ClubRoleController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }

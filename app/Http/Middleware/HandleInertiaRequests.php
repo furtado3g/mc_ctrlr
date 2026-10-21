@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Regional;
+use App\Services\Cache\AppCacheManagerInterface;
 use App\Support\InstitutionalBrand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
                 $request->session()->put('ui_draft_scope', $draftScope);
             }
 
-            $cache = app(\App\Services\Cache\AppCacheManagerInterface::class);
+            $cache = app(AppCacheManagerInterface::class);
 
             if ($user->is_global) {
                 $activeRegionalId = $request->session()->get('active_regional_id');
@@ -66,7 +66,7 @@ class HandleInertiaRequests extends Middleware
             }
         }
 
-        $cache = app(\App\Services\Cache\AppCacheManagerInterface::class);
+        $cache = app(AppCacheManagerInterface::class);
 
         return [
             ...parent::share($request),

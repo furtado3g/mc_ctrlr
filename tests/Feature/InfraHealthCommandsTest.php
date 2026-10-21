@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
@@ -15,14 +16,14 @@ class InfraHealthCommandsTest extends TestCase
 
     public function test_cache_health_command_json_output_structure(): void
     {
-        $this->artisan('app:cache-health', ['--json' => true])
-            ->assertExitCode(0);
+        $exitCode = Artisan::call('app:cache-health', ['--json' => true]);
+        $this->assertSame(0, $exitCode);
 
-        $output = $this->app['artisan']->output();
+        $output = Artisan::output();
         $data = json_decode($output, true);
 
-        $this->assertIsArray($data, 'Output must be valid JSON');
-        $this->assertArrayHasKey('status', $data);
+        $this->assertIsArray($data, 'Output must be valid JSON: '.$output);
+        $this->assertSame('ok', $data['status']);
         $this->assertArrayHasKey('driver', $data);
         $this->assertArrayHasKey('connected', $data);
         $this->assertArrayHasKey('latency_ms', $data);
@@ -68,13 +69,13 @@ class InfraHealthCommandsTest extends TestCase
             $this->artisan('storage:link')->assertSuccessful();
         }
 
-        $this->artisan('app:storage-health', ['--json' => true])
-            ->assertExitCode(0);
+        $exitCode = Artisan::call('app:storage-health', ['--json' => true]);
+        $this->assertSame(0, $exitCode);
 
-        $output = $this->app['artisan']->output();
+        $output = Artisan::output();
         $data = json_decode($output, true);
 
-        $this->assertIsArray($data, 'Output must be valid JSON');
+        $this->assertIsArray($data, 'Output must be valid JSON: '.$output);
         $this->assertSame('ok', $data['status']);
         $this->assertArrayHasKey('reference_path', $data);
         $this->assertArrayHasKey('disks', $data);

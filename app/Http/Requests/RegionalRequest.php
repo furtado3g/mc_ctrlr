@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Regional;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -56,11 +58,11 @@ class RegionalRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $regionalId = $this->route('regional') instanceof \App\Models\Regional
+        $regionalId = $this->route('regional') instanceof Regional
             ? $this->route('regional')->id
             : $this->route('regional');
 

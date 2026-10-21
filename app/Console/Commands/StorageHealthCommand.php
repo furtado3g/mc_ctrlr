@@ -67,7 +67,7 @@ class StorageHealthCommand extends Command
         ];
 
         if ($this->option('json')) {
-            $this->output->writeln(json_encode($outputData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            $this->line((string) json_encode($outputData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         } else {
             $this->info('--- Storage Health Status ---');
             $this->table(
@@ -106,8 +106,8 @@ class StorageHealthCommand extends Command
         $writeTest = 'failed';
 
         if ($writable) {
-            $testFile = $path . DIRECTORY_SEPARATOR . '.health_check_' . uniqid() . '.tmp';
-            $testContent = 'storage_health_' . time();
+            $testFile = $path.DIRECTORY_SEPARATOR.'.health_check_'.uniqid().'.tmp';
+            $testContent = 'storage_health_'.time();
             try {
                 if (file_put_contents($testFile, $testContent) !== false) {
                     $readBack = file_get_contents($testFile);

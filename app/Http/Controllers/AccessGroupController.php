@@ -9,6 +9,7 @@ use App\Http\Requests\RoleAccessGroupRequest;
 use App\Models\AccessGroup;
 use App\Models\AccessGroupPermission;
 use App\Models\ClubRole;
+use App\Services\Cache\AppCacheManagerInterface;
 use App\Support\AccessPermissionCatalog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class AccessGroupController extends Controller
             $audit->execute('access_group', $group->id, 'created', null, $this->snapshot($group), $request->user()->id);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }
@@ -61,7 +62,7 @@ class AccessGroupController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }
@@ -78,7 +79,7 @@ class AccessGroupController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }
@@ -95,7 +96,7 @@ class AccessGroupController extends Controller
             $accessAdmin->execute($hadAccessAdministrator);
         });
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateUserPermissions();
+        app(AppCacheManagerInterface::class)->invalidateUserPermissions();
 
         return back();
     }

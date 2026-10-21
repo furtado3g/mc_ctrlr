@@ -6,6 +6,7 @@ use App\Actions\RecordAuditEvent;
 use App\Http\Requests\RegionalRequest;
 use App\Models\Regional;
 use App\Models\RegionalCity;
+use App\Services\Cache\AppCacheManagerInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -96,7 +97,7 @@ class RegionalController extends Controller
 
         $regional->load('cities');
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
+        app(AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
 
         $audit->execute(
             'regional',
@@ -179,7 +180,7 @@ class RegionalController extends Controller
 
         $regional->refresh()->load('cities');
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
+        app(AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
 
         $audit->execute(
             'regional',
@@ -218,7 +219,7 @@ class RegionalController extends Controller
         $regional->active = ! $regional->active;
         $regional->save();
 
-        app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
+        app(AppCacheManagerInterface::class)->invalidateRegionals($regional->id);
 
         $audit->execute(
             'regional',

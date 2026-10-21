@@ -16,7 +16,7 @@ interface AppCacheManagerInterface
     /**
      * Obtém as informações públicas de marca e layout com cache.
      *
-     * @return array<string, mixed>
+     * @return array{name: string, logo: string|null, app_layout: string, auth_layout: string, appLayout?: string, authLayout?: string}
      */
     public function getPublishedBrand(): array;
 
@@ -62,10 +62,14 @@ interface AppCacheManagerInterface
      * @return array{
      *     status: string,
      *     driver: string,
-     *     latency_ms: float,
      *     connected: bool,
+     *     latency_ms: float,
+     *     write_read_test: string,
+     *     ttl_test: string,
      *     fallback_available: bool,
-     *     details: string
+     *     fallback_store: string,
+     *     details: string,
+     *     timestamp: string
      * }
      */
     public function checkHealth(): array;

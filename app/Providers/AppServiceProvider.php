@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Services\Cache\AppCacheManager;
+use App\Services\Cache\AppCacheManagerInterface;
 use App\Support\AccessPermissionCatalog;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -18,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(\App\Services\Cache\AppCacheManagerInterface::class, \App\Services\Cache\AppCacheManager::class);
+        $this->app->singleton(AppCacheManagerInterface::class, AppCacheManager::class);
     }
 
     /**

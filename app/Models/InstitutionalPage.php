@@ -22,6 +22,21 @@ class InstitutionalPage extends Model
         return ['published_content' => 'array', 'draft_content' => 'array', 'draft_saved_at' => 'datetime', 'published_at' => 'datetime'];
     }
 
+    protected static function booted(): void
+    {
+        static::saved(function (): void {
+            if (app()->bound(\App\Services\Cache\AppCacheManagerInterface::class)) {
+                app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateLanding();
+            }
+        });
+
+        static::deleted(function (): void {
+            if (app()->bound(\App\Services\Cache\AppCacheManagerInterface::class)) {
+                app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateLanding();
+            }
+        });
+    }
+
     /** @param Builder<static> $query */
     public function scopeHome(Builder $query): void
     {

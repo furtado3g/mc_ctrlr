@@ -14,13 +14,19 @@ use Illuminate\Support\Str;
 class AppCacheManager implements AppCacheManagerInterface
 {
     public const KEY_LANDING = 'institutional:landing:content';
+
     public const KEY_BRAND = 'institutional:brand:published';
+
     public const KEY_REGIONALS = 'regionals:active:list';
+
     public const KEY_PERMISSIONS_VERSION = 'permissions:global_version';
 
     public const TTL_LANDING = 86400; // 24 hours
+
     public const TTL_BRAND = 86400;   // 24 hours
+
     public const TTL_REGIONALS = 43200; // 12 hours
+
     public const TTL_PERMISSIONS = 3600; // 1 hour
 
     /**
@@ -45,6 +51,8 @@ class AppCacheManager implements AppCacheManagerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array{name: string, logo: string|null, app_layout: string, auth_layout: string, appLayout: string, authLayout: string}
      */
     public function getPublishedBrand(): array
     {
@@ -160,7 +168,7 @@ class AppCacheManager implements AppCacheManagerInterface
                 $version = $this->getPermissionsVersion() + 1;
                 Cache::forever(self::KEY_PERMISSIONS_VERSION, $version);
             } catch (\Throwable $e) {
-                Log::warning('Failed to increment global permissions version: ' . $e->getMessage());
+                Log::warning('Failed to increment global permissions version: '.$e->getMessage());
             }
 
             return;
@@ -196,13 +204,13 @@ class AppCacheManager implements AppCacheManagerInterface
             $latencyMs = $redisLatency;
         } catch (\Throwable $e) {
             $redisOk = false;
-            $details = 'Redis indisponível: ' . $e->getMessage();
+            $details = 'Redis indisponível: '.$e->getMessage();
         }
 
         // 2. Test cache store read/write/forget
         $cacheWriteReadPassed = false;
         try {
-            $testKey = 'health:test:ping:' . Str::random(8);
+            $testKey = 'health:test:ping:'.Str::random(8);
             Cache::put($testKey, 'health_ok', 30);
             $readVal = Cache::get($testKey);
             Cache::forget($testKey);
@@ -218,7 +226,7 @@ class AppCacheManager implements AppCacheManagerInterface
         // 3. Test TTL expiration
         $ttlPassed = false;
         try {
-            $ttlKey = 'health:test:ttl:' . Str::random(8);
+            $ttlKey = 'health:test:ttl:'.Str::random(8);
             Cache::put($ttlKey, 'ttl_val', 2);
             $ttlPassed = Cache::has($ttlKey);
             Cache::forget($ttlKey);
@@ -231,7 +239,7 @@ class AppCacheManager implements AppCacheManagerInterface
             $details = 'Redis conectado e com leitura/escrita normal.';
         } elseif ($cacheWriteReadPassed) {
             $status = 'degraded';
-            $details = 'Redis offline, operando via fallback (' . $driver . ').';
+            $details = 'Redis offline, operando via fallback ('.$driver.').';
         } else {
             $status = 'error';
             $details = 'Falha no serviço de cache e no fallback.';
@@ -262,7 +270,8 @@ class AppCacheManager implements AppCacheManagerInterface
 
     /**
      * @template T
-     * @param \Closure(): T $callback
+     *
+     * @param  \Closure(): T  $callback
      * @return T
      */
     protected function rememberSafe(string $key, int $ttl, \Closure $callback): mixed
@@ -270,7 +279,7 @@ class AppCacheManager implements AppCacheManagerInterface
         try {
             return Cache::remember($key, $ttl, $callback);
         } catch (\Throwable $e) {
-            Log::warning("Cache failure for key [{$key}], falling back to source: " . $e->getMessage());
+            Log::warning("Cache failure for key [{$key}], falling back to source: ".$e->getMessage());
 
             return $callback();
         }
@@ -281,7 +290,7 @@ class AppCacheManager implements AppCacheManagerInterface
         try {
             Cache::forget($key);
         } catch (\Throwable $e) {
-            Log::warning("Cache forget failure for key [{$key}]: " . $e->getMessage());
+            Log::warning("Cache forget failure for key [{$key}]: ".$e->getMessage());
         }
     }
 }

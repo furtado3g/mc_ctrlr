@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserBelongsToRegional;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -23,11 +24,11 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-            \App\Http\Middleware\EnsureUserBelongsToRegional::class,
+            EnsureUserBelongsToRegional::class,
         ]);
 
         $middleware->alias([
-            'regional' => \App\Http\Middleware\EnsureUserBelongsToRegional::class,
+            'regional' => EnsureUserBelongsToRegional::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
