@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Cache\AppCacheManagerInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,14 +26,14 @@ class InstitutionalPage extends Model
     protected static function booted(): void
     {
         static::saved(function (): void {
-            if (app()->bound(\App\Services\Cache\AppCacheManagerInterface::class)) {
-                app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateLanding();
+            if (app()->bound(AppCacheManagerInterface::class)) {
+                app(AppCacheManagerInterface::class)->invalidateLanding();
             }
         });
 
         static::deleted(function (): void {
-            if (app()->bound(\App\Services\Cache\AppCacheManagerInterface::class)) {
-                app(\App\Services\Cache\AppCacheManagerInterface::class)->invalidateLanding();
+            if (app()->bound(AppCacheManagerInterface::class)) {
+                app(AppCacheManagerInterface::class)->invalidateLanding();
             }
         });
     }

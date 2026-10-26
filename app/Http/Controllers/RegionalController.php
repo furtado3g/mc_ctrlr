@@ -67,6 +67,7 @@ class RegionalController extends Controller
     public function store(RegionalRequest $request, RecordAuditEvent $audit): RedirectResponse
     {
         $data = $request->validated();
+        /** @var array<int, array<string, mixed>> $citiesData */
         $citiesData = $data['cities'];
 
         $headquarters = collect($citiesData)->firstWhere('is_headquarters', true);
@@ -129,6 +130,7 @@ class RegionalController extends Controller
         ];
 
         $data = $request->validated();
+        /** @var array<int, array<string, mixed>> $citiesData */
         $citiesData = $data['cities'];
 
         $headquarters = collect($citiesData)->firstWhere('is_headquarters', true);

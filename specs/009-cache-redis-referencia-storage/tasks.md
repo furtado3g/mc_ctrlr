@@ -2,7 +2,7 @@
 
 **Feature**: `009-cache-redis-referencia-storage`  
 **Input**: [spec.md](./spec.md), [plan.md](./plan.md), [data-model.md](./data-model.md), [contracts/](./contracts/), [quickstart.md](./quickstart.md)  
-**Status**: Ready for Implementation  
+**Status**: Completed  
 
 ---
 
@@ -104,9 +104,9 @@
 
 **Purpose**: Validação de qualidade, formatação de código, análise estática e verificação do guia rápido.
 
-- [ ] T027 [P] Run code formatting with Laravel Pint (`composer lint` / `pint --parallel`)
-- [ ] T028 [P] Run static analysis with Larastan/PHPStan (`phpstan analyse`)
-- [ ] T029 Execute full test suite (`php artisan test`) and execute quickstart scenarios from `specs/009-cache-redis-referencia-storage/quickstart.md`
+- [x] T027 [P] Run code formatting with Laravel Pint (`composer lint` / `pint --parallel`)
+- [x] T028 [P] Run static analysis with Larastan/PHPStan (`phpstan analyse`)
+- [x] T029 Execute full test suite (`php artisan test`) and execute quickstart scenarios from `specs/009-cache-redis-referencia-storage/quickstart.md`
 
 ---
 
@@ -122,7 +122,7 @@ graph TD
     Phase2 --> Phase5[Phase 5: User Story 3 - Health Diagnostics]
     Phase3 --> Phase6[Phase 6: Polish & Cross-Cutting]
     Phase4 --> Phase6
-    Phase5 --> Phase6
+  Phase5 --> Phase6
 ```
 
 - **Setup (Phase 1)**: Sem dependências - inicia imediatamente.
